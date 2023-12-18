@@ -1,0 +1,52 @@
+{
+	"sheets": [
+		{
+			"name": "gem",
+			"columns": [
+				{
+					"typeStr": "1",
+					"name": "name"
+				},
+				{
+					"typeStr": "7",
+					"name": "img"
+				},
+				{
+					"typeStr": "13",
+					"name": "sprite"
+				},
+				{
+					"typeStr": "3",
+					"name": "mining"
+				},
+				{
+					"typeStr": "3",
+					"name": "cooking"
+				},
+				{
+					"typeStr": "3",
+					"name": "working"
+				},
+				{
+					"typeStr": "3",
+					"name": "cost"
+				}
+			],
+			"lines": [
+				{
+					"name": "dimond",
+					"mining": 1,
+					"cooking": 1,
+					"working": 1,
+					"cost": 0,
+					"img": "0f8f7a5de0bce2d932b9fee1e9490837",
+					"sprite": "assets/images/gem-1.png"
+				}
+			],
+			"separators": [],
+			"props": {}
+		}
+	],
+	"customTypes": [],
+	"compress": false
+}
