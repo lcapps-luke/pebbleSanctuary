@@ -43,6 +43,21 @@ class PebbleGame
 		bestStats.working = FlxMath.maxInt(stats.working, bestStats.working);
 		bestStats.mining = FlxMath.maxInt(stats.mining, bestStats.mining);
 	}
+
+	public static function getUnlockQueueForLocation(locationType:PebbleLocation):Array<Int>
+	{
+		return switch (locationType)
+		{
+			case MINE:
+				Data.gem.all.map(g -> g.cost); // gem type unlocks
+			case KITCHEN:
+				[2, 4, 8, 16]; // pebble slot unlocks
+			case OFFICE:
+				[1, 2, 3, 4, 5]; // pebble creator unlocks
+			case NONE:
+				[];
+		}
+	}
 }
 
 typedef PebbleDefinition =

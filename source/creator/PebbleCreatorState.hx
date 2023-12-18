@@ -71,7 +71,7 @@ class PebbleCreatorState extends FlxState
 		gemStats.working = gemDef.working;
 
 		var mousePosition = FlxG.mouse.getPosition();
-		gem.setSelected(true, mousePosition.x, mousePosition.y);
+		gem.setSelected(true, mousePosition);
 		FlxDestroyUtil.put(mousePosition);
 
 		add(gem);
@@ -104,7 +104,7 @@ class PebbleCreatorState extends FlxState
 				pebbleLayer.remove(heldComponent);
 				add(heldComponent);
 
-				heldComponent.setSelected(true, mousePosition.x, mousePosition.y);
+				heldComponent.setSelected(true, mousePosition);
 			}
 
 			FlxDestroyUtil.put(mousePosition);
@@ -116,10 +116,10 @@ class PebbleCreatorState extends FlxState
 			{
 				remove(heldComponent);
 				pebbleLayer.add(heldComponent);
-				heldComponent.setSelected(false, 0, 0);
 
 				if (!heldComponent.isWithin(workspace))
 				{
+					heldComponent.setSelected(false, null);
 					heldComponent.kill();
 				}
 

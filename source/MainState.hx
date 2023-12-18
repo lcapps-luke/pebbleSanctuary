@@ -7,11 +7,13 @@ import creator.PebbleCreatorState;
 import flixel.FlxG;
 import flixel.FlxState;
 import flixel.ui.FlxButton;
+import flixel.util.FlxColor;
 
 class MainState extends FlxState
 {
 	override public function create()
 	{
+		this.bgColor = FlxColor.BLACK;
 		super.create();
 
 		var createButton = new FlxButton(0, 0, "Create Pebble", onCreatePebble);

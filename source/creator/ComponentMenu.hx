@@ -4,6 +4,7 @@ import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.text.FlxText;
 import flixel.util.FlxColor;
 
 abstract class ComponentMenu extends FlxTypedGroup<FlxBasic>
@@ -24,7 +25,13 @@ abstract class ComponentMenu extends FlxTypedGroup<FlxBasic>
 		bg.x = FlxG.width - bg.width;
 		add(bg);
 
-		// TODO add title and nav buttons
+		// TODO add nav buttons
+		var title = new FlxText();
+		title.setFormat(AssetPaths.Schoolbell__ttf, 50);
+		title.text = name;
+		title.x = bg.width / 2 - title.width / 2 + bg.x;
+		title.y = 40;
+		add(title);
 	}
 
 	private function addMenuItem(itm:ComponentMenuItem)
