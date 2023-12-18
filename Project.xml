@@ -3,12 +3,11 @@
 	xsi:schemaLocation="http://lime.software/project/1.0.2 http://lime.software/xsd/project-1.0.2.xsd">
 
 	<!-- _________________________ Application Settings _________________________ -->
+	<set name="version" value="0.0.1" />
+	<prebuild command="prebuild.bat ${version}"/>
 
-	<app title="HoloSanctuary" file="HoloSanctuary" main="Main" version="0.0.1" company="HaxeFlixel" />
-
-	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
-		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->
-	<app preloader="flixel.system.FlxPreloader" />
+	<app file="PebbleSanctuary" main="Main" preloader="flixel.system.FlxPreloader" />
+	<meta title="Pebble Sanctuary" package="uk.co.lcapps.holo.pebble" company="LC-Apps" company-url="https://lc-apps.co.uk/" version="${version}"/>
 
 	<!--Minimum without FLX_NO_GAMEPAD: 11.8, without FLX_NO_NATIVE_CURSOR: 11.2-->
 	<set name="SWF_VERSION" value="11.8" />
@@ -16,13 +15,13 @@
 	<!-- ____________________________ Window Settings ___________________________ -->
 
 	<!--These window settings apply to all targets-->
-	<window width="1920" height="1080" fps="60" background="#ffffff" hardware="true" vsync="false" />
+	<window width="1280" height="720" fps="60" background="#ffffff" hardware="true" vsync="true" resizable="true" />
 
 	<!--HTML5-specific-->
-	<window if="html5" resizable="false" />
+	<window if="html5" />
 
 	<!--Desktop-specific-->
-	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" />
+	<window if="desktop" orientation="landscape" fullscreen="false" />
 
 	<!--Mobile-specific-->
 	<window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0" />
@@ -72,7 +71,7 @@
 	<!--<haxedef name="FLX_NO_SOUND_SYSTEM" />-->
 
 	<!--Disable the Flixel core focus lost screen-->
-	<!--<haxedef name="FLX_NO_FOCUS_LOST_SCREEN" />-->
+	<haxedef name="FLX_NO_FOCUS_LOST_SCREEN" />
 
 	<!--Disable the Flixel core debugger. Automatically gets set whenever you compile in release mode!-->
 	<haxedef name="FLX_NO_DEBUG" unless="debug" />
@@ -83,6 +82,8 @@
 	<!-- _________________________________ Custom _______________________________ -->
 	
 	<!--Place custom nodes like icons here (higher priority to override the HaxeFlixel icon)-->
+	<icon path="icon.png" />
+	<haxeflag name="-dce" value="full" />
 	<compilerflag name="-dce" value="full" />
 	<compilerflag name="--resource" value="database.cdb" />
 </project>
