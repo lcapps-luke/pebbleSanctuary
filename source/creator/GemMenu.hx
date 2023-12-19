@@ -2,9 +2,9 @@ package creator;
 
 class GemMenu extends ComponentMenu
 {
-	public function new(back:Void->Void, forward:Void->Void, onAdd:Data.Gem->Float->Float->Void)
+	public function new(back:Void->Void, forward:Void->Void, onAdd:Data.Gem->Float->Float->Void, x:Float, width:Float)
 	{
-		super("Gem", back, forward);
+		super("Gem", back, forward, x, width);
 		columns = 2;
 
 		for (g in Data.gem.all)

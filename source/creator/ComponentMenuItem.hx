@@ -20,6 +20,7 @@ class ComponentMenuItem extends FlxTypedGroup<FlxSprite>
 
 	private var size:Float;
 	private var statIconSize:Float;
+	private var img:FlxSprite;
 
 	public function new(spr:FlxGraphicAsset, locked:Bool, cost:Int, costType:PebbleLocation, size:Float = SIZE)
 	{
@@ -28,14 +29,12 @@ class ComponentMenuItem extends FlxTypedGroup<FlxSprite>
 		this.size = size;
 		statIconSize = size / 6;
 
-		var img = new FlxSprite(AssetPaths.gem_1__png);
+		img = new FlxSprite(AssetPaths.gem_1__png);
 		var pScale = Math.min(size / img.width, size / img.height);
 		img.scale.set(pScale, pScale);
 		img.updateHitbox();
 		img.x = x + size / 2 - img.width / 2;
 		img.y = y + size / 2 - img.height / 2;
-
-		FlxG.debugger.track(img, "gem item");
 
 		add(img);
 	}
@@ -83,17 +82,22 @@ class ComponentMenuItem extends FlxTypedGroup<FlxSprite>
 		FlxDestroyUtil.destroy(mPos);
 	}
 
-	function set_x(value:Float):Float
+	private function set_x(value:Float):Float
 	{
 		var shift = value - x;
 		this.forEach(m -> m.x += shift);
 		return x = value;
 	}
 
-	function set_y(value:Float):Float
+	private function set_y(value:Float):Float
 	{
 		var shift = value - y;
 		this.forEach(m -> m.y += shift);
 		return y = value;
+	}
+
+	public function setColour(c:FlxColor)
+	{
+		img.setColorTransform(c.redFloat, c.greenFloat, c.blueFloat);
 	}
 }

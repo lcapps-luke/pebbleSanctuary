@@ -24,13 +24,13 @@ class PebbleComponent extends FlxTypedGroup<FlxSprite>
 	private var scalePoint:FlxSprite;
 	private var lastAngle:Float = 0;
 
-	public function new(asset:FlxGraphicAsset, x:Float, y:Float)
+	public function new(asset:FlxGraphicAsset, x:Float, y:Float, colour:FlxColor)
 	{
 		super();
 		sprite = new FlxSprite(0, 0, asset);
-		sprite.setColorTransform(FlxG.random.float(0.5, 1), FlxG.random.float(0.5, 1), FlxG.random.float(0.5, 1));
 		sprite.x = x - sprite.width / 2;
 		sprite.y = y - sprite.height / 2;
+		setColour(colour);
 		add(sprite);
 
 		rotatePoint = new FlxSprite();
@@ -159,6 +159,11 @@ class PebbleComponent extends FlxTypedGroup<FlxSprite>
 		FlxDestroyUtil.put(sprRect);
 
 		return inside;
+	}
+
+	public function setColour(c:FlxColor)
+	{
+		sprite.setColorTransform(c.redFloat, c.greenFloat, c.blueFloat);
 	}
 }
 

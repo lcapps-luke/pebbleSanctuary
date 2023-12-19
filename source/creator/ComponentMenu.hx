@@ -11,25 +11,25 @@ abstract class ComponentMenu extends FlxTypedGroup<FlxBasic>
 {
 	private static inline var ITEM_COLS = 3;
 
-	private var bg:FlxSprite;
-
 	private var itemQty = 0;
 	private var columns = ITEM_COLS;
 
-	public function new(name:String, back:Void->Void, forward:Void->Void)
+	private var width:Float;
+	private var x:Float;
+
+	private var items = new Array<ComponentMenuItem>();
+
+	public function new(name:String, back:Void->Void, forward:Void->Void, x:Float, width:Float)
 	{
 		super();
-
-		bg = new FlxSprite();
-		bg.makeGraphic(Math.round(FlxG.width * 0.3), Math.round(FlxG.height), FlxColor.GRAY);
-		bg.x = FlxG.width - bg.width;
-		add(bg);
+		this.width = width;
+		this.x = x;
 
 		// TODO add nav buttons
 		var title = new FlxText();
 		title.setFormat(AssetPaths.Schoolbell__ttf, 50);
 		title.text = name;
-		title.x = bg.width / 2 - title.width / 2 + bg.x;
+		title.x = width / 2 - title.width / 2 + x;
 		title.y = 40;
 		add(title);
 	}
@@ -39,13 +39,22 @@ abstract class ComponentMenu extends FlxTypedGroup<FlxBasic>
 		var iy = Math.floor(itemQty / columns);
 		var ix = itemQty - iy * columns;
 
-		var cellSize = bg.width / columns;
+		var cellSize = width / columns;
 
-		itm.x = bg.x + ix * cellSize + (cellSize / 2 - ComponentMenuItem.SIZE / 2);
+		itm.x = x + ix * cellSize + (cellSize / 2 - ComponentMenuItem.SIZE / 2);
 		itm.y = 150 + iy * cellSize;
 
 		add(itm);
+		items.push(itm);
 
 		itemQty++;
+	}
+
+	public function setComponentColour(c:FlxColor)
+	{
+		for (i in items)
+		{
+			i.setColour(c);
+		}
 	}
 }
