@@ -5,10 +5,12 @@ class GemMenu extends ComponentMenu
 	public function new(back:Void->Void, forward:Void->Void, onAdd:Data.Gem->Float->Float->Void)
 	{
 		super("Gem", back, forward);
+		columns = 2;
 
 		for (g in Data.gem.all)
 		{
-			var itm = new ComponentMenuItem(g.sprite, g.cost <= PebbleGame.bestStats.mining, g.cost, MINE);
+			var itm = new ComponentMenuItem(g.sprite, g.cost <= PebbleGame.bestStats.mining, g.cost, MINE, 170);
+			itm.setStats(g.working, g.cooking, g.mining);
 			itm.callback = (x, y) -> onAdd(g, x, y);
 			addMenuItem(itm);
 		}

@@ -13,8 +13,8 @@ abstract class ComponentMenu extends FlxTypedGroup<FlxBasic>
 
 	private var bg:FlxSprite;
 
-	private var itemSlotSize:Float;
 	private var itemQty = 0;
+	private var columns = ITEM_COLS;
 
 	public function new(name:String, back:Void->Void, forward:Void->Void)
 	{
@@ -36,10 +36,10 @@ abstract class ComponentMenu extends FlxTypedGroup<FlxBasic>
 
 	private function addMenuItem(itm:ComponentMenuItem)
 	{
-		var iy = Math.floor(itemQty / ITEM_COLS);
-		var ix = itemQty - iy * ITEM_COLS;
+		var iy = Math.floor(itemQty / columns);
+		var ix = itemQty - iy * columns;
 
-		var cellSize = bg.width / ITEM_COLS;
+		var cellSize = bg.width / columns;
 
 		itm.x = bg.x + ix * cellSize + (cellSize / 2 - ComponentMenuItem.SIZE / 2);
 		itm.y = 150 + iy * cellSize;
