@@ -54,7 +54,7 @@ class MainState extends FlxState
 		createButton.y = 50;
 		add(createButton);
 
-		fullScreenButton = new Button("Fullscreen", false, toggleFullScreen);
+		fullScreenButton = new Button(getFullscreenText(), false, toggleFullScreen);
 		fullScreenButton.setPosition(20, 20);
 		add(fullScreenButton);
 	}
@@ -126,7 +126,12 @@ class MainState extends FlxState
 	private function toggleFullScreen()
 	{
 		FlxG.fullscreen = !FlxG.fullscreen;
-		fullScreenButton.text = FlxG.fullscreen ? "Windowed" : "Fullscreen";
+		fullScreenButton.text = getFullscreenText();
+	}
+
+	private inline function getFullscreenText():String
+	{
+		return FlxG.fullscreen ? "Windowed" : "Fullscreen";
 	}
 }
 
