@@ -49,6 +49,7 @@ class PebbleComponent extends FlxTypedGroup<FlxSprite>
 		this.selected = selected;
 		if (!selected)
 		{
+			updateHandles();
 			return;
 		}
 

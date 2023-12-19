@@ -8,6 +8,7 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
+import ui.Button;
 
 abstract class AbstractAreaState extends FlxState
 {
@@ -54,7 +55,8 @@ abstract class AbstractAreaState extends FlxState
 			acc += PebbleOption.SIZE + 30;
 		}
 
-		var back = new FlxButton(50, 50, "Back", onBack);
+		var back = new Button("Back", true, onBack);
+		back.setPosition(50, 50);
 		add(back);
 
 		// score & next unlock text
@@ -63,7 +65,7 @@ abstract class AbstractAreaState extends FlxState
 		nextUnlockQty = getNextUnlockQty();
 
 		title = new FlxText();
-		title.setFormat(AssetPaths.Schoolbell__ttf, 40);
+		title.setFormat(AssetPaths.Schoolbell__ttf, 60);
 		title.text = getTitleText(currentPoints, nextUnlockQty);
 		title.x = FlxG.width / 2 - title.width / 2;
 		title.y = FlxG.height * 0.1;

@@ -4,6 +4,7 @@ import PebbleGame.PebbleDefinition;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.ui.FlxButton;
+import ui.Button;
 
 class PebbleOption extends FlxTypedGroup<FlxSprite>
 {
@@ -15,8 +16,8 @@ class PebbleOption extends FlxTypedGroup<FlxSprite>
 	public var placed(default, set):Bool;
 
 	private var callback:PebbleOption->Void;
-	private var placeButton:FlxButton;
-	private var removeButton:FlxButton;
+	private var placeButton:Button;
+	private var removeButton:Button;
 
 	public function new(x:Float, y:Float, pebble:PebbleDefinition, placed:Bool, callback:PebbleOption->Void)
 	{
@@ -37,9 +38,13 @@ class PebbleOption extends FlxTypedGroup<FlxSprite>
 		pSpr.updateHitbox();
 		add(pSpr);
 
-		placeButton = new FlxButton(x, y + VIEW_HEIGHT, "Place", onButton);
+		placeButton = new Button("Place", false, onButton);
+		placeButton.setPosition(x, y + VIEW_HEIGHT);
 		add(placeButton);
-		removeButton = new FlxButton(x, y + VIEW_HEIGHT, "Remove", onButton);
+
+		removeButton = new Button("Remove", false, onButton);
+		removeButton.setPosition(x, y + VIEW_HEIGHT);
+		removeButton.setMode(false);
 		add(removeButton);
 		this.placed = placed;
 	}

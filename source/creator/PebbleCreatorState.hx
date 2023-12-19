@@ -11,6 +11,7 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxSpriteUtil;
+import ui.Button;
 
 class PebbleCreatorState extends FlxState
 {
@@ -54,7 +55,7 @@ class PebbleCreatorState extends FlxState
 		var gemMenu = new GemMenu(null, null, onAddGem);
 		add(gemMenu);
 
-		var finishButton = new FlxButton(0, 0, "Finish", onFinish);
+		var finishButton = new Button("Finish", true, onFinish);
 		finishButton.x = FlxG.width * 0.85 - finishButton.width / 2;
 		finishButton.y = FlxG.height * 0.85;
 		add(finishButton);
@@ -99,6 +100,7 @@ class PebbleCreatorState extends FlxState
 				{
 					heldComponent = c;
 				}
+				c.setSelected(false, null);
 			});
 
 			if (heldComponent != null)

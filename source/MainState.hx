@@ -8,6 +8,7 @@ import flixel.FlxG;
 import flixel.FlxState;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
+import ui.Button;
 
 class MainState extends FlxState
 {
@@ -16,22 +17,22 @@ class MainState extends FlxState
 		this.bgColor = FlxColor.BLACK;
 		super.create();
 
-		var createButton = new FlxButton(0, 0, "Create Pebble", onCreatePebble);
+		var createButton = new Button("Create Pebble", true, onCreatePebble);
 		createButton.x = FlxG.width - createButton.width - 50;
 		createButton.y = 50;
 		add(createButton);
 
-		var mineButton = new FlxButton(0, 0, "Mine", onGotoMine);
+		var mineButton = new Button("Mine", true, onGotoMine);
 		mineButton.x = FlxG.width * 0.75 - mineButton.width / 2;
 		mineButton.y = FlxG.height * 0.8;
 		add(mineButton);
 
-		var kitchenButton = new FlxButton(0, 0, "Kitchen", onGotoKitchen);
+		var kitchenButton = new Button("Kitchen", true, onGotoKitchen);
 		kitchenButton.x = FlxG.width * 0.5 - kitchenButton.width / 2;
 		kitchenButton.y = FlxG.height * 0.8;
 		add(kitchenButton);
 
-		var officeButton = new FlxButton(0, 0, "Office", onGotoOffice);
+		var officeButton = new Button("Office", true, onGotoOffice);
 		officeButton.x = FlxG.width * 0.25 - officeButton.width / 2;
 		officeButton.y = FlxG.height * 0.8;
 		add(officeButton);
