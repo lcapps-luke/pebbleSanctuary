@@ -33,13 +33,11 @@ class PebbleComponent extends FlxTypedGroup<FlxSprite>
 		setColour(colour);
 		add(sprite);
 
-		rotatePoint = new FlxSprite();
-		rotatePoint.makeGraphic(32, 32, FlxColor.RED);
+		rotatePoint = new FlxSprite(AssetPaths.rotate__png);
 		rotatePoint.visible = false;
 		add(rotatePoint);
 
-		scalePoint = new FlxSprite();
-		scalePoint.makeGraphic(32, 32, FlxColor.BLUE);
+		scalePoint = new FlxSprite(AssetPaths.scale__png);
 		scalePoint.visible = false;
 		add(scalePoint);
 	}
@@ -55,14 +53,14 @@ class PebbleComponent extends FlxTypedGroup<FlxSprite>
 
 		holdPoint.copyFrom(mousePosition);
 
-		if (rotatePoint.pixelsOverlapPoint(mousePosition))
+		if (rotatePoint.overlapsPoint(mousePosition))
 		{
 			holdPoint.subtract(sprite.x, sprite.y);
 			holdPoint.subtract(sprite.origin.x, sprite.origin.y);
 			lastAngle = sprite.angle;
 			mode = ROTATE;
 		}
-		else if (scalePoint.pixelsOverlapPoint(mousePosition))
+		else if (scalePoint.overlapsPoint(mousePosition))
 		{
 			holdPoint.subtract(scalePoint.x, scalePoint.y);
 			mode = SCALE;
@@ -139,7 +137,7 @@ class PebbleComponent extends FlxTypedGroup<FlxSprite>
 	{
 		if (selected)
 		{
-			if (rotatePoint.pixelsOverlapPoint(point) || scalePoint.pixelsOverlapPoint(point))
+			if (rotatePoint.overlapsPoint(point) || scalePoint.overlapsPoint(point))
 			{
 				return true;
 			}

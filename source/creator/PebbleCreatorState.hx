@@ -6,16 +6,11 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.addons.display.FlxBackdrop;
-import flixel.addons.ui.FlxSlider;
-import flixel.addons.ui.FlxUIColorSwatch;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
-import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
-import flixel.util.FlxDestroyUtil;
-import flixel.util.FlxGradient;
 import flixel.util.FlxSpriteUtil;
 import ui.Button;
 
