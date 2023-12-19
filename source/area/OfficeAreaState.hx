@@ -1,5 +1,8 @@
 package area;
 
+import flixel.FlxG;
+import flixel.FlxSprite;
+
 class OfficeAreaState extends AbstractAreaState
 {
 	public function new()
@@ -24,5 +27,16 @@ class OfficeAreaState extends AbstractAreaState
 			return 'Working points: $current (next unlock at $next)';
 		}
 		return 'Working points: $current';
+	}
+
+	function createBackgroundSprites()
+	{
+		backFar = new FlxSprite(AssetPaths.main_bg_1__png);
+
+		backMid = new FlxSprite(AssetPaths.main_bg_2__png);
+		backMid.y = FlxG.height - backMid.height;
+
+		backFor = new FlxSprite(AssetPaths.main_bg_3__png);
+		backFor.y = FlxG.height - backFor.height;
 	}
 }

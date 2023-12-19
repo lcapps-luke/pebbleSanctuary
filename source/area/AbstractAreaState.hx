@@ -3,10 +3,12 @@ package area;
 import PebbleGame.PebbleDefinition;
 import PebbleGame.PebbleLocation;
 import flixel.FlxG;
+import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.math.FlxMath;
+import flixel.math.FlxPoint;
 import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
-import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import ui.Button;
 
@@ -20,6 +22,12 @@ abstract class AbstractAreaState extends FlxState
 
 	private var title:FlxText;
 
+	private var backFar:FlxSprite;
+	private var backMid:FlxSprite;
+	private var backFor:FlxSprite;
+	private var backDiff:Float;
+	private var mousePosition = new FlxPoint();
+
 	public function new(locationType:PebbleLocation)
 	{
 		super();
@@ -31,9 +39,16 @@ abstract class AbstractAreaState extends FlxState
 	{
 		this.bgColor = FlxColor.BLACK;
 		super.create();
-		// TODO background
-		// TODO midground
-		// TODO foreground
+
+		createBackgroundSprites();
+		backDiff = Math.min((backFar.width - FlxG.width) * 0.5, (backFor.width - FlxG.width) * 0.5);
+
+		add(backFar);
+		add(backMid);
+
+		// TODO pebble layer
+
+		add(backFor);
 
 		// ui
 		var pebbleList = new Array<PebbleDefinition>();
@@ -72,6 +87,8 @@ abstract class AbstractAreaState extends FlxState
 		add(title);
 	}
 
+	private abstract function createBackgroundSprites():Void;
+
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -81,6 +98,11 @@ abstract class AbstractAreaState extends FlxState
 			displayPoints = currentPoints;
 			title.text = getTitleText(displayPoints, nextUnlockQty);
 		}
+
+		FlxG.mouse.getPosition(mousePosition);
+		var scrollPercent = mousePosition.x / FlxG.width;
+		backFar.x = FlxMath.bound(scrollPercent * backDiff - backDiff, -backDiff, 0);
+		backFor.x = FlxMath.bound(-scrollPercent * backDiff, -backDiff, 0);
 	}
 
 	private function onPebbleOption(opt:PebbleOption)
