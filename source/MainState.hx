@@ -26,6 +26,7 @@ class MainState extends FlxState
 	private var backDiff:Float;
 
 	private var areaSpriteLink = new Array<AreaSprite>();
+	private var fullScreenButton:Button;
 
 	override public function create()
 	{
@@ -52,15 +53,19 @@ class MainState extends FlxState
 		createButton.x = FlxG.width - createButton.width - 50;
 		createButton.y = 50;
 		add(createButton);
+
+		fullScreenButton = new Button("Fullscreen", false, toggleFullScreen);
+		fullScreenButton.setPosition(20, 20);
+		add(fullScreenButton);
 	}
 
 	private function addLocationSpr(spr:FlxGraphicAsset, xPercent:Float, yBottom:Float, onClick:Void->Void)
 	{
 		var locSpr = new FlxSprite(spr);
-
-		#if hl
 		locSpr.x = FlxG.width * xPercent - locSpr.width / 2;
 		locSpr.y = yBottom - locSpr.height;
+
+		#if hl
 		add(locSpr);
 		#end
 
@@ -116,6 +121,12 @@ class MainState extends FlxState
 		{
 			a.sprite.effectsEnabled = a.area.status != FlxButton.NORMAL;
 		}
+	}
+
+	private function toggleFullScreen()
+	{
+		FlxG.fullscreen = !FlxG.fullscreen;
+		fullScreenButton.text = FlxG.fullscreen ? "Windowed" : "Fullscreen";
 	}
 }
 
