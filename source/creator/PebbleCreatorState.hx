@@ -82,6 +82,12 @@ class PebbleCreatorState extends FlxState
 		finishButton.x = FlxG.width * 0.35 - finishButton.width / 2;
 		finishButton.y = FlxG.height * 0.85;
 		add(finishButton);
+
+		var cancelButton = new Button("Cancel", false, onCancel);
+		cancelButton.setMode(false);
+		cancelButton.x = 20;
+		cancelButton.y = 20;
+		add(cancelButton);
 	}
 
 	private function onAddGem(gemDef:Data.Gem, x:Float, y:Float)
@@ -207,6 +213,11 @@ class PebbleCreatorState extends FlxState
 			location: NONE
 		});
 
+		FlxG.switchState(new MainState());
+	}
+
+	private function onCancel()
+	{
 		FlxG.switchState(new MainState());
 	}
 }

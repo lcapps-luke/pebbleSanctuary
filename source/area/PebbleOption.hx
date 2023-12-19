@@ -54,7 +54,7 @@ class PebbleOption extends FlxTypedGroup<FlxSprite>
 		add(placeButton);
 
 		removeButton = new Button("Remove", false, onButton);
-		removeButton.setPosition(x, y + VIEW_HEIGHT);
+		removeButton.setPosition(x + SIZE / 2 - placeButton.width / 2, y + VIEW_HEIGHT);
 		removeButton.setMode(false);
 		add(removeButton);
 		this.placed = placed;
