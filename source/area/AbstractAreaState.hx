@@ -125,7 +125,14 @@ abstract class AbstractAreaState extends FlxState
 		FlxTween.tween(this, {currentPoints: getAreaPoints()}, 0.5, {
 			onComplete: function(t:FlxTween)
 			{
-				nextUnlockQty = getNextUnlockQty();
+				var newNextUnlockQty = getNextUnlockQty();
+
+				if (newNextUnlockQty != nextUnlockQty)
+				{
+					showUnlock(nextUnlockQty);
+				}
+
+				nextUnlockQty = newNextUnlockQty;
 				title.text = getTitleText(currentPoints, nextUnlockQty);
 			}
 		});
@@ -140,7 +147,7 @@ abstract class AbstractAreaState extends FlxState
 	{
 		for (u in unlockQueue)
 		{
-			if (u > currentPoints)
+			if (u > getAreaMaxPoints())
 			{
 				return u;
 			}
@@ -148,7 +155,15 @@ abstract class AbstractAreaState extends FlxState
 		return -1;
 	}
 
+	private function showUnlock(unlockQty:Int)
+	{
+		var spr = PebbleGame.getUnlockItem(locationType, unlockQty);
+		openSubState(new UnlockSubstate(spr));
+	}
+
 	public abstract function getAreaPoints():Int;
+
+	public abstract function getAreaMaxPoints():Int;
 
 	public abstract function getUnlockQueue():Array<Int>;
 

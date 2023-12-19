@@ -2,6 +2,8 @@ package;
 
 import flixel.FlxSprite;
 import flixel.math.FlxMath;
+import flixel.text.FlxText;
+import flixel.util.FlxColor;
 
 class PebbleGame
 {
@@ -57,6 +59,28 @@ class PebbleGame
 			case NONE:
 				[];
 		}
+	}
+
+	public static function getUnlockItem(locationType:PebbleLocation, cost:Int):FlxSprite
+	{
+		return switch (locationType)
+		{
+			case MINE:
+				new FlxSprite(Data.gem.all.filter(g -> g.cost == cost)[0].sprite);
+			case KITCHEN:
+				makeText("New Pebble Slot!");
+			case OFFICE:
+				makeText("New Pebble Parts!");
+			case NONE:
+				null;
+		}
+	}
+
+	private static function makeText(s:String)
+	{
+		var t = new FlxText(0, 0, 0, s);
+		t.setFormat(AssetPaths.Schoolbell__ttf, 80, FlxColor.BLACK, CENTER);
+		return t;
 	}
 }
 

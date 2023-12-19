@@ -15,6 +15,11 @@ class KitchenAreaState extends AbstractAreaState
 		return PebbleGame.stats.cooking;
 	}
 
+	public function getAreaMaxPoints():Int
+	{
+		return PebbleGame.bestStats.cooking;
+	}
+
 	public function getUnlockQueue():Array<Int>
 	{
 		return PebbleGame.getUnlockQueueForLocation(KITCHEN);

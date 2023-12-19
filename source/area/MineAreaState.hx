@@ -15,6 +15,11 @@ class MineAreaState extends AbstractAreaState
 		return PebbleGame.stats.mining;
 	}
 
+	public function getAreaMaxPoints():Int
+	{
+		return PebbleGame.bestStats.mining;
+	}
+
 	public function getUnlockQueue():Array<Int>
 	{
 		return PebbleGame.getUnlockQueueForLocation(MINE);

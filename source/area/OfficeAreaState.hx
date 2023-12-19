@@ -15,6 +15,11 @@ class OfficeAreaState extends AbstractAreaState
 		return PebbleGame.stats.working;
 	}
 
+	public function getAreaMaxPoints():Int
+	{
+		return PebbleGame.bestStats.working;
+	}
+
 	public function getUnlockQueue():Array<Int>
 	{
 		return PebbleGame.getUnlockQueueForLocation(OFFICE);
