@@ -3,6 +3,7 @@ package creator;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 import flixel.system.FlxAssets.FlxGraphicAsset;
@@ -21,6 +22,7 @@ class PebbleComponent extends FlxTypedGroup<FlxSprite>
 
 	private var rotatePoint:FlxSprite;
 	private var scalePoint:FlxSprite;
+	private var lastAngle:Float = 0;
 
 	public function new(asset:FlxGraphicAsset, x:Float, y:Float)
 	{
@@ -54,7 +56,9 @@ class PebbleComponent extends FlxTypedGroup<FlxSprite>
 
 		if (rotatePoint.pixelsOverlapPoint(mousePosition))
 		{
-			holdPoint.subtract(rotatePoint.x, rotatePoint.y);
+			holdPoint.subtract(sprite.x, sprite.y);
+			holdPoint.subtract(sprite.origin.x, sprite.origin.y);
+			lastAngle = sprite.angle;
 			mode = ROTATE;
 		}
 		else if (scalePoint.pixelsOverlapPoint(mousePosition))
@@ -101,13 +105,21 @@ class PebbleComponent extends FlxTypedGroup<FlxSprite>
 			pressPoint.subtract(holdPoint.x, holdPoint.y);
 			sprite.setPosition(pressPoint.x, pressPoint.y);
 		}
-		else if (mode == ROTATE) {}
+		else if (mode == ROTATE)
+		{
+			var startHoldAngle = Math.atan2(holdPoint.y, holdPoint.x);
+			pressPoint.subtract(sprite.x, sprite.y);
+			pressPoint.subtract(sprite.origin.x, sprite.origin.y);
+			var endHoldAngle = Math.atan2(pressPoint.y, pressPoint.x);
+			sprite.angle = lastAngle + (180 / Math.PI) * (endHoldAngle - startHoldAngle);
+		}
 		else if (mode == SCALE)
 		{
 			pressPoint.subtract(sprite.x, sprite.y);
 			pressPoint.subtract(holdPoint.x, holdPoint.y);
 			sprite.setGraphicSize(pressPoint.x, pressPoint.y);
 			sprite.updateHitbox();
+			sprite.centerOrigin();
 		}
 	}
 

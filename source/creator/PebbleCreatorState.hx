@@ -5,6 +5,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
@@ -24,6 +25,8 @@ class PebbleCreatorState extends FlxState
 
 	private var justAdded = false;
 	private var heldComponent:PebbleComponent = null;
+
+	private var mousePosition = new FlxPoint();
 
 	override function create()
 	{
@@ -70,9 +73,8 @@ class PebbleCreatorState extends FlxState
 		gemStats.mining = gemDef.mining;
 		gemStats.working = gemDef.working;
 
-		var mousePosition = FlxG.mouse.getPosition();
+		FlxG.mouse.getPosition(mousePosition);
 		gem.setSelected(true, mousePosition);
-		FlxDestroyUtil.put(mousePosition);
 
 		add(gem);
 		heldComponent = gem;
@@ -85,11 +87,11 @@ class PebbleCreatorState extends FlxState
 
 		super.update(elapsed);
 
+		FlxG.mouse.getPosition(mousePosition);
+
 		if (FlxG.mouse.justPressed && !justAdded)
 		{
 			heldComponent = null;
-
-			var mousePosition = FlxG.mouse.getPosition();
 
 			pebbleLayer.forEach(c ->
 			{
@@ -106,8 +108,6 @@ class PebbleCreatorState extends FlxState
 
 				heldComponent.setSelected(true, mousePosition);
 			}
-
-			FlxDestroyUtil.put(mousePosition);
 		}
 
 		if (FlxG.mouse.justReleased)
@@ -125,6 +125,17 @@ class PebbleCreatorState extends FlxState
 
 				heldComponent = null;
 			}
+		}
+
+		if (!FlxG.mouse.pressed)
+		{
+			pebbleLayer.forEach(c ->
+			{
+				if (c.overlapsPoint(mousePosition))
+				{
+					PebbleGame.cursorGrab = true;
+				}
+			});
 		}
 
 		justAdded = false;
