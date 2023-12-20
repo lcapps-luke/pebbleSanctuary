@@ -1,8 +1,10 @@
 package area;
 
 import PebbleGame.PebbleDefinition;
+import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.group.FlxGroup.FlxTypedGroup;
 
 class ReleaseAreaState extends AbstractAreaState
 {
@@ -53,5 +55,10 @@ class ReleaseAreaState extends AbstractAreaState
 	override private function makePebbleOption(x:Float, y:Float, pebble:PebbleDefinition, placed:Bool)
 	{
 		return new PebbleOption(x, y, pebble, placed, onPebbleOption, "Release", "Release");
+	}
+
+	function createWalls(group:FlxTypedGroup<FlxBasic>):Float
+	{
+		return 0;
 	}
 }

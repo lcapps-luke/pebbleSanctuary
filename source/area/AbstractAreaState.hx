@@ -2,9 +2,11 @@ package area;
 
 import PebbleGame.PebbleDefinition;
 import PebbleGame.PebbleLocation;
+import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.text.FlxText;
@@ -28,6 +30,9 @@ abstract class AbstractAreaState extends FlxState
 	private var backDiff:Float;
 	private var mousePosition = new FlxPoint();
 
+	private var pebbleGroup = new FlxTypedGroup<FlxBasic>();
+	private var floorPosition:Float = 0;
+
 	public function new(locationType:PebbleLocation)
 	{
 		super();
@@ -45,29 +50,30 @@ abstract class AbstractAreaState extends FlxState
 
 		add(backFar);
 		add(backMid);
-
-		// TODO pebble layer
-
+		add(pebbleGroup);
 		add(backFor);
 
+		floorPosition = createWalls(pebbleGroup);
+
 		// ui
-		var pebbleList = new Array<PebbleDefinition>();
+		var acc = 30.0;
 		for (p in PebbleGame.pebbleList)
 		{
 			if (p.location == NONE || p.location == locationType)
 			{
-				pebbleList.push(p);
+				var placed = p.location == locationType;
+				var opt = makePebbleOption(acc, FlxG.height - PebbleOption.SIZE - 30, p, placed);
+				add(opt);
+
+				acc += PebbleOption.SIZE + 30;
+
+				if (placed)
+				{
+					var pbl = createInteractivePebble(p);
+					opt.interactivePebble = pbl;
+					pebbleGroup.add(pbl);
+				}
 			}
-		}
-
-		var acc = 30.0;
-		for (p in pebbleList)
-		{
-			var placed = p.location == locationType;
-			var opt = makePebbleOption(acc, FlxG.height - PebbleOption.SIZE - 30, p, placed);
-			add(opt);
-
-			acc += PebbleOption.SIZE + 30;
 		}
 
 		var back = new Button("Back", true, onBack);
@@ -88,10 +94,9 @@ abstract class AbstractAreaState extends FlxState
 		add(title);
 	}
 
-	private abstract function createBackgroundSprites():Void;
-
 	override function update(elapsed:Float)
 	{
+		FlxG.collide(pebbleGroup);
 		super.update(elapsed);
 
 		if (currentPoints != displayPoints)
@@ -114,6 +119,11 @@ abstract class AbstractAreaState extends FlxState
 			opt.pebble.location = NONE;
 			opt.placed = false;
 			PebbleGame.calculateStats();
+
+			if (opt.interactivePebble != null)
+			{
+				opt.interactivePebble.kill();
+			}
 		}
 		else
 		{
@@ -121,6 +131,17 @@ abstract class AbstractAreaState extends FlxState
 			opt.pebble.location = locationType;
 			opt.placed = true;
 			PebbleGame.calculateStats();
+
+			if (opt.interactivePebble == null)
+			{
+				var pbl = createInteractivePebble(opt.pebble);
+				opt.interactivePebble = pbl;
+				pebbleGroup.add(pbl);
+			}
+			else
+			{
+				opt.interactivePebble.revive();
+			}
 		}
 
 		FlxTween.tween(this, {currentPoints: getAreaPoints()}, 0.5, {
@@ -166,6 +187,22 @@ abstract class AbstractAreaState extends FlxState
 	{
 		return new PebbleOption(x, y, pebble, placed, onPebbleOption);
 	}
+
+	private function createInteractivePebble(p:PebbleDefinition):InteractivePebble
+	{
+		var spr = p.sprite.clone();
+		spr.scale.set(0.3, 0.3);
+		spr.updateHitbox();
+
+		spr.x = FlxG.random.float(200, FlxG.width - spr.width - 200);
+		spr.y = floorPosition - spr.height;
+
+		return new InteractivePebble(spr);
+	}
+
+	private abstract function createBackgroundSprites():Void;
+
+	private abstract function createWalls(group:FlxTypedGroup<FlxBasic>):Float;
 
 	public abstract function getAreaPoints():Int;
 

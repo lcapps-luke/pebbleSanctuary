@@ -20,6 +20,7 @@ class PebbleOption extends FlxTypedGroup<FlxSprite>
 
 	public var pebble(default, null):PebbleDefinition;
 	public var placed(default, set):Bool;
+	public var interactivePebble:InteractivePebble;
 
 	private var callback:PebbleOption->Void;
 	private var placeButton:Button;
