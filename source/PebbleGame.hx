@@ -2,6 +2,7 @@ package;
 
 import flixel.FlxSprite;
 import flixel.math.FlxMath;
+import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 
@@ -81,6 +82,17 @@ class PebbleGame
 		var t = new FlxText(0, 0, 0, s);
 		t.setFormat(AssetPaths.Schoolbell__ttf, 80, FlxColor.BLACK, CENTER);
 		return t;
+	}
+
+	public static function getIconForLocation(loc:PebbleLocation):FlxGraphicAsset
+	{
+		return switch (loc)
+		{
+			case MINE: AssetPaths.icon_mine__png;
+			case KITCHEN: AssetPaths.icon_kitchen__png;
+			case OFFICE: AssetPaths.icon_office__png;
+			default: null;
+		}
 	}
 }
 

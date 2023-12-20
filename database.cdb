@@ -41,6 +41,51 @@
 					"cost": 0,
 					"img": "0f8f7a5de0bce2d932b9fee1e9490837",
 					"sprite": "assets/images/gem-1.png"
+				},
+				{
+					"name": "triangle",
+					"img": "a5cde7e2abf9bb8c2ed63c717135baa5",
+					"sprite": "assets/images/gem-2.png",
+					"mining": 1,
+					"cooking": 2,
+					"working": 1,
+					"cost": 1
+				},
+				{
+					"name": "pent",
+					"img": "fcbba116b0d6be85784a8f6a36a2e7cb",
+					"sprite": "assets/images/gem-3.png",
+					"mining": 2,
+					"cooking": 0,
+					"working": 3,
+					"cost": 2
+				},
+				{
+					"name": "hex",
+					"img": "eb2ee8984df1ef56182e754382147385",
+					"sprite": "assets/images/gem-4.png",
+					"mining": 3,
+					"cooking": 1,
+					"working": 2,
+					"cost": 4
+				},
+				{
+					"name": "star",
+					"img": "a50bc5e1119b2714f1350c80eea2403d",
+					"sprite": "assets/images/gem-5.png",
+					"mining": 4,
+					"cooking": 2,
+					"working": 1,
+					"cost": 6
+				},
+				{
+					"name": "heart",
+					"img": "6f4dd5c074df517cb7d723ef860e6360",
+					"sprite": "assets/images/gem-6.png",
+					"mining": 2,
+					"cooking": 4,
+					"working": 2,
+					"cost": 8
 				}
 			],
 			"separators": [],

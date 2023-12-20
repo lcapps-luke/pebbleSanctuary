@@ -21,29 +21,54 @@ class ComponentMenuItem extends FlxTypedGroup<FlxSprite>
 	private var size:Float;
 	private var statIconSize:Float;
 	private var img:FlxSprite;
+	private var locked:Bool;
 
 	public function new(spr:FlxGraphicAsset, locked:Bool, cost:Int, costType:PebbleLocation, size:Float = SIZE)
 	{
 		super();
 
+		this.locked = locked;
 		this.size = size;
 		statIconSize = size / 6;
 
-		img = new FlxSprite(AssetPaths.gem_1__png);
+		img = new FlxSprite(spr);
 		var pScale = Math.min(size / img.width, size / img.height);
 		img.scale.set(pScale, pScale);
 		img.updateHitbox();
 		img.x = x + size / 2 - img.width / 2;
 		img.y = y + size / 2 - img.height / 2;
-
 		add(img);
+
+		// lock mask
+		if (locked)
+		{
+			var lockMask = new FlxSprite(0, 0, AssetPaths.locked__png);
+			lockMask.setGraphicSize(size);
+			add(lockMask);
+
+			var spr = new FlxSprite(0, size - statIconSize * 1.5, PebbleGame.getIconForLocation(costType));
+			spr.setGraphicSize(statIconSize, statIconSize);
+			spr.updateHitbox();
+			add(spr);
+
+			var txt = new FlxText(0, size - (statIconSize * 1.6), 0, Std.string(cost));
+			txt.setFormat(AssetPaths.Schoolbell__ttf, Math.round(statIconSize), FlxColor.BLACK);
+			add(txt);
+
+			var w = (spr.width + txt.width) * 1.1;
+			spr.x = size / 2 - w / 2;
+			txt.x = spr.x + w - txt.width;
+		}
 	}
 
 	public function setStats(work:Int, cook:Int, mine:Int)
 	{
-		makeStat(AssetPaths.icon_office__png, work, x, y, 0);
-		makeStat(AssetPaths.icon_kitchen__png, cook, x, y, 1);
-		makeStat(AssetPaths.icon_mine__png, mine, x, y, 2);
+		if (!locked)
+		{
+			makeStat(AssetPaths.icon_office__png, work, x, y, 0);
+			makeStat(AssetPaths.icon_kitchen__png, cook, x, y, 1);
+			makeStat(AssetPaths.icon_mine__png, mine, x, y, 2);
+		}
 	}
 
 	private function makeStat(icon:FlxGraphicAsset, val:Int, x:Float, y:Float, pos:Int)
@@ -67,6 +92,11 @@ class ComponentMenuItem extends FlxTypedGroup<FlxSprite>
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
+
+		if (locked)
+		{
+			return;
+		}
 
 		var mPos = FlxG.mouse.getPosition();
 		if (mPos.x > x && mPos.x < x + SIZE && mPos.y > y && mPos.y < y + SIZE)

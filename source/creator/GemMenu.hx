@@ -9,7 +9,7 @@ class GemMenu extends ComponentMenu
 
 		for (g in Data.gem.all)
 		{
-			var itm = new ComponentMenuItem(g.sprite, g.cost <= PebbleGame.bestStats.mining, g.cost, MINE, 170);
+			var itm = new ComponentMenuItem(g.sprite, g.cost > PebbleGame.bestStats.mining, g.cost, MINE, 170);
 			itm.setStats(g.working, g.cooking, g.mining);
 			itm.callback = (x, y) -> onAdd(g, x, y);
 			addMenuItem(itm);
