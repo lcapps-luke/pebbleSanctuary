@@ -25,7 +25,7 @@ class PebbleOption extends FlxTypedGroup<FlxSprite>
 	private var placeButton:Button;
 	private var removeButton:Button;
 
-	public function new(x:Float, y:Float, pebble:PebbleDefinition, placed:Bool, callback:PebbleOption->Void)
+	public function new(x:Float, y:Float, pebble:PebbleDefinition, placed:Bool, callback:PebbleOption->Void, actionName:String = "Place", undoName = "Remove")
 	{
 		super();
 		this.pebble = pebble;
@@ -49,11 +49,11 @@ class PebbleOption extends FlxTypedGroup<FlxSprite>
 		makeStat(AssetPaths.icon_kitchen__png, pebble.stats.cooking, x, y, 1);
 		makeStat(AssetPaths.icon_mine__png, pebble.stats.mining, x, y, 2);
 
-		placeButton = new Button("Place", false, onButton);
+		placeButton = new Button(actionName, false, onButton);
 		placeButton.setPosition(x + SIZE / 2 - placeButton.width / 2, y + VIEW_HEIGHT);
 		add(placeButton);
 
-		removeButton = new Button("Remove", false, onButton);
+		removeButton = new Button(undoName, false, onButton);
 		removeButton.setPosition(x + SIZE / 2 - placeButton.width / 2, y + VIEW_HEIGHT);
 		removeButton.setMode(false);
 		add(removeButton);

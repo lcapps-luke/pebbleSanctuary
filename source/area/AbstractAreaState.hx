@@ -64,7 +64,7 @@ abstract class AbstractAreaState extends FlxState
 		for (p in pebbleList)
 		{
 			var placed = p.location == locationType;
-			var opt = new PebbleOption(acc, FlxG.height - PebbleOption.SIZE - 30, p, placed, onPebbleOption);
+			var opt = makePebbleOption(acc, FlxG.height - PebbleOption.SIZE - 30, p, placed);
 			add(opt);
 
 			acc += PebbleOption.SIZE + 30;
@@ -80,7 +80,8 @@ abstract class AbstractAreaState extends FlxState
 		nextUnlockQty = getNextUnlockQty();
 
 		title = new FlxText();
-		title.setFormat(AssetPaths.Schoolbell__ttf, 60);
+		title.setFormat(AssetPaths.Schoolbell__ttf, 70, FlxColor.WHITE, CENTER, OUTLINE, FlxColor.BLACK);
+		title.borderSize = 3;
 		title.text = getTitleText(currentPoints, nextUnlockQty);
 		title.x = FlxG.width / 2 - title.width / 2;
 		title.y = FlxG.height * 0.1;
@@ -159,6 +160,11 @@ abstract class AbstractAreaState extends FlxState
 	{
 		var spr = PebbleGame.getUnlockItem(locationType, unlockQty);
 		openSubState(new UnlockSubstate(spr));
+	}
+
+	private function makePebbleOption(x:Float, y:Float, pebble:PebbleDefinition, placed:Bool)
+	{
+		return new PebbleOption(x, y, pebble, placed, onPebbleOption);
 	}
 
 	public abstract function getAreaPoints():Int;

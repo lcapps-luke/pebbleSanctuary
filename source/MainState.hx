@@ -3,6 +3,7 @@ package;
 import area.KitchenAreaState;
 import area.MineAreaState;
 import area.OfficeAreaState;
+import area.ReleaseAreaState;
 import creator.PebbleCreatorState;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -57,6 +58,11 @@ class MainState extends FlxState
 		fullScreenButton = new Button(getFullscreenText(), false, toggleFullScreen);
 		fullScreenButton.setPosition(20, 20);
 		add(fullScreenButton);
+
+		var releaseButton = new Button("Release", false, onRelease);
+		releaseButton.setMode(false);
+		releaseButton.setPosition(20, FlxG.height - releaseButton.height - 20);
+		add(releaseButton);
 	}
 
 	private function addLocationSpr(spr:FlxGraphicAsset, xPercent:Float, yBottom:Float, onClick:Void->Void)
@@ -106,6 +112,11 @@ class MainState extends FlxState
 	private function onGotoOffice()
 	{
 		FlxG.switchState(new OfficeAreaState());
+	}
+
+	private function onRelease()
+	{
+		FlxG.switchState(new ReleaseAreaState());
 	}
 
 	override public function update(elapsed:Float)
