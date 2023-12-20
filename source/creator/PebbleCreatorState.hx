@@ -96,6 +96,8 @@ class PebbleCreatorState extends FlxState
 
 	private function onAddGem(gemDef:Data.Gem, x:Float, y:Float)
 	{
+		pebbleLayer.forEach(c -> c.setSelected(false, null));
+
 		if (gem != null)
 		{
 			pebbleLayer.remove(gem);
@@ -117,6 +119,8 @@ class PebbleCreatorState extends FlxState
 
 	private function onAddComponent(componentDefinition:Data.Component, x:Float, y:Float)
 	{
+		pebbleLayer.forEach(c -> c.setSelected(false, null));
+
 		var component = new PebbleComponent(componentDefinition.sprite, x, y, colourPicker.colour);
 
 		FlxG.mouse.getPosition(mousePosition);
