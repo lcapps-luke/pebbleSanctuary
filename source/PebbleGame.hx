@@ -10,6 +10,7 @@ class PebbleGame
 {
 	public static var cursorGrab(default, default):Bool = false;
 
+	public static var pebbleSlots:Int = 2;
 	public static var pebbleList = new Array<PebbleDefinition>();
 	public static var stats:PebbleStats = {
 		mining: 0,
@@ -45,6 +46,15 @@ class PebbleGame
 		bestStats.cooking = FlxMath.maxInt(stats.cooking, bestStats.cooking);
 		bestStats.working = FlxMath.maxInt(stats.working, bestStats.working);
 		bestStats.mining = FlxMath.maxInt(stats.mining, bestStats.mining);
+
+		pebbleSlots = 2;
+		for (i in getUnlockQueueForLocation(KITCHEN))
+		{
+			if (i <= bestStats.cooking)
+			{
+				pebbleSlots++;
+			}
+		}
 	}
 
 	public static function getUnlockQueueForLocation(locationType:PebbleLocation):Array<Int>
@@ -54,9 +64,9 @@ class PebbleGame
 			case MINE:
 				Data.gem.all.map(g -> g.cost); // gem type unlocks
 			case KITCHEN:
-				[2, 4, 8, 16]; // pebble slot unlocks
+				[2, 4, 6, 8, 10]; // pebble slot unlocks
 			case OFFICE:
-				[1, 2, 3, 4, 5]; // pebble creator unlocks
+				return Data.component.all.map(c -> c.cost); // pebble creator unlocks
 			case NONE:
 				[];
 		}

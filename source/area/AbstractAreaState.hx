@@ -61,7 +61,7 @@ abstract class AbstractAreaState extends FlxState
 		{
 			if (p.location == NONE || p.location == locationType)
 			{
-				var placed = p.location == locationType;
+				var placed = (p.location == locationType && p.location != NONE);
 				var opt = makePebbleOption(acc, FlxG.height - PebbleOption.SIZE - 30, p, placed);
 				add(opt);
 
@@ -115,19 +115,16 @@ abstract class AbstractAreaState extends FlxState
 	{
 		if (opt.placed)
 		{
-			// TODO remove pebble
+			// remove pebble
 			opt.pebble.location = NONE;
 			opt.placed = false;
 			PebbleGame.calculateStats();
 
-			if (opt.interactivePebble != null)
-			{
-				opt.interactivePebble.kill();
-			}
+			opt.interactivePebble?.kill();
 		}
 		else
 		{
-			// TODO add pebble
+			// add pebble
 			opt.pebble.location = locationType;
 			opt.placed = true;
 			PebbleGame.calculateStats();
@@ -135,8 +132,11 @@ abstract class AbstractAreaState extends FlxState
 			if (opt.interactivePebble == null)
 			{
 				var pbl = createInteractivePebble(opt.pebble);
-				opt.interactivePebble = pbl;
-				pebbleGroup.add(pbl);
+				if (pbl != null)
+				{
+					opt.interactivePebble = pbl;
+					pebbleGroup.add(pbl);
+				}
 			}
 			else
 			{

@@ -166,7 +166,6 @@ class PebbleCreatorState extends FlxState
 
 				if (heldComponent.isWithin(workspace))
 				{
-					heldComponent.setSelected(false, null);
 					pebbleLayer.add(heldComponent);
 				}
 				else

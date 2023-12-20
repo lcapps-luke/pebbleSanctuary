@@ -1,5 +1,6 @@
 package;
 
+import PebbleGame.PebbleLocation;
 import area.KitchenAreaState;
 import area.MineAreaState;
 import area.OfficeAreaState;
@@ -14,8 +15,10 @@ import flixel.addons.ui.FlxClickArea;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.system.FlxAssets.FlxGraphicAsset;
+import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
+import haxe.display.Position.Location;
 import ui.Button;
 
 class MainState extends FlxState
@@ -41,9 +44,9 @@ class MainState extends FlxState
 		backMid.y = FlxG.height - backMid.height;
 		add(backMid);
 
-		addLocationSpr(AssetPaths.office__png, 0.2, 930, onGotoOffice);
-		addLocationSpr(AssetPaths.cafe__png, 0.5, 930, onGotoKitchen);
-		addLocationSpr(AssetPaths.mine__png, 0.8, 930, onGotoMine);
+		addLocationSpr(AssetPaths.office__png, 0.2, 930, onGotoOffice, PebbleLocation.OFFICE);
+		addLocationSpr(AssetPaths.cafe__png, 0.5, 930, onGotoKitchen, PebbleLocation.KITCHEN);
+		addLocationSpr(AssetPaths.mine__png, 0.8, 930, onGotoMine, PebbleLocation.MINE);
 
 		backFor = new FlxSprite(AssetPaths.main_bg_3__png);
 		backFor.y = FlxG.height - backFor.height;
@@ -53,7 +56,18 @@ class MainState extends FlxState
 		var createButton = new Button("Create Pebble", LARGE, onCreatePebble);
 		createButton.x = FlxG.width - createButton.width - 50;
 		createButton.y = 50;
-		add(createButton);
+		if (PebbleGame.pebbleList.length < PebbleGame.pebbleSlots)
+		{
+			add(createButton);
+		}
+
+		var qty = new FlxText();
+		qty.setFormat(AssetPaths.Schoolbell__ttf, 50, FlxColor.WHITE, CENTER, OUTLINE, FlxColor.BLACK);
+		qty.borderSize = 3;
+		qty.text = '${PebbleGame.pebbleList.length} / ${PebbleGame.pebbleSlots} Pebbles';
+		qty.x = createButton.x + createButton.width / 2 - qty.width / 2;
+		qty.y = createButton.height + 10;
+		add(qty);
 
 		fullScreenButton = new Button(getFullscreenText(), SMALL, toggleFullScreen);
 		fullScreenButton.setPosition(20, 20);
@@ -65,7 +79,7 @@ class MainState extends FlxState
 		add(releaseButton);
 	}
 
-	private function addLocationSpr(spr:FlxGraphicAsset, xPercent:Float, yBottom:Float, onClick:Void->Void)
+	private function addLocationSpr(spr:FlxGraphicAsset, xPercent:Float, yBottom:Float, onClick:Void->Void, type:PebbleLocation)
 	{
 		var locSpr = new FlxSprite(spr);
 		locSpr.x = FlxG.width * xPercent - locSpr.width / 2;
@@ -92,6 +106,16 @@ class MainState extends FlxState
 			sprite: effSpr
 		});
 		#end
+
+		var pebbleQty = PebbleGame.pebbleList.filter(p -> p.location == type).length;
+
+		var qty = new FlxText();
+		qty.setFormat(AssetPaths.Schoolbell__ttf, 50, FlxColor.WHITE, CENTER, OUTLINE, FlxColor.BLACK);
+		qty.borderSize = 3;
+		qty.text = '$pebbleQty Pebbles';
+		qty.x = office.x + office.width / 2 - qty.width / 2;
+		qty.y = office.y;
+		add(qty);
 	}
 
 	private function onCreatePebble()
