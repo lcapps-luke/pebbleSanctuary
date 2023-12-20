@@ -39,12 +39,12 @@ class KitchenAreaState extends AbstractAreaState
 
 	function createBackgroundSprites()
 	{
-		backFar = new FlxSprite(AssetPaths.main_bg_1__png);
+		backFar = new FlxSprite(AssetPaths.cafe_bg_1__png);
+		backFar.y = 255;
 
-		backMid = new FlxSprite(AssetPaths.main_bg_2__png);
-		backMid.y = FlxG.height - backMid.height;
+		backMid = new FlxSprite(AssetPaths.cafe_bg_2__png);
 
-		backFor = new FlxSprite(AssetPaths.main_bg_3__png);
+		backFor = new FlxSprite(AssetPaths.cafe_bg_3__png);
 		backFor.y = FlxG.height - backFor.height;
 	}
 
@@ -56,7 +56,7 @@ class KitchenAreaState extends AbstractAreaState
 		group.add(w);
 
 		w = new FlxSprite();
-		w.makeGraphic(FlxG.width, 320, FlxColor.TRANSPARENT);
+		w.makeGraphic(FlxG.width, 190, FlxColor.TRANSPARENT);
 		w.setPosition(0, FlxG.height - w.height);
 		w.immovable = true;
 		group.add(w);
@@ -72,6 +72,18 @@ class KitchenAreaState extends AbstractAreaState
 		w.immovable = true;
 		group.add(w);
 
-		return FlxG.height - 320;
+		w = new FlxSprite();
+		w.makeGraphic(160, 270, FlxColor.TRANSPARENT);
+		w.setPosition(1358, 622);
+		w.immovable = true;
+		group.add(w);
+
+		w = new FlxSprite();
+		w.makeGraphic(100, 180, FlxColor.TRANSPARENT);
+		w.setPosition(1520, 711);
+		w.immovable = true;
+		group.add(w);
+
+		return FlxG.height - 190;
 	}
 }
