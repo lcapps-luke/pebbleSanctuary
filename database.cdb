@@ -145,6 +145,132 @@
 					"type": [
 						2
 					]
+				},
+				{
+					"name": "dot eye",
+					"image": "29801cac172dc8c0cad36f3ec3aa9577",
+					"sprite": "assets/images/eye-2.png",
+					"cost": 1,
+					"type": [
+						0
+					]
+				},
+				{
+					"name": "dash eye",
+					"image": "f2679bd23379f562bd0e429eb158d69d",
+					"sprite": "assets/images/eye-3.png",
+					"cost": 4,
+					"type": [
+						0
+					]
+				},
+				{
+					"name": "uwu eye",
+					"image": "cadb603a549790ca2cb17a3ad3724ae3",
+					"sprite": "assets/images/eye-4.png",
+					"cost": 7,
+					"type": [
+						0
+					]
+				},
+				{
+					"name": "neko eye",
+					"image": "469da4865c535eee26a7934e442aed38",
+					"sprite": "assets/images/eye-5.png",
+					"cost": 10,
+					"type": [
+						0
+					]
+				},
+				{
+					"name": "plush eye",
+					"image": "c2ada2af4cfc265ff4a652bebfbfc4c9",
+					"sprite": "assets/images/eye-6.png",
+					"cost": 13,
+					"type": [
+						0
+					]
+				},
+				{
+					"name": "uwu mouth",
+					"image": "d02c0d38c8e1e7d7686f6c3ecea081a9",
+					"sprite": "assets/images/mouth-2.png",
+					"cost": 2,
+					"type": [
+						1
+					]
+				},
+				{
+					"name": "ahhh",
+					"image": "50a1e9c1dd03d5f892e633862df5a9e2",
+					"sprite": "assets/images/mouth-3.png",
+					"cost": 5,
+					"type": [
+						1
+					]
+				},
+				{
+					"name": "neko grin",
+					"image": "974b08be8420eb6afde386f1eb2fcc09",
+					"sprite": "assets/images/mouth-4.png",
+					"cost": 8,
+					"type": [
+						1
+					]
+				},
+				{
+					"name": "chump",
+					"image": "c017899e7f50402d54a80f1bd093127c",
+					"sprite": "assets/images/mouth-5.png",
+					"cost": 11,
+					"type": [
+						1
+					]
+				},
+				{
+					"name": "goofy",
+					"image": "c548ef2b8f3e85ce4817ef23cfe5d699",
+					"sprite": "assets/images/mouth-6.png",
+					"cost": 14,
+					"type": [
+						1
+					]
+				},
+				{
+					"name": "top",
+					"image": "6067843fc18e53859f64d38525f504f9",
+					"sprite": "assets/images/acc-2.png",
+					"cost": 3,
+					"type": [
+						2
+					]
+				},
+				{
+					"name": "blob",
+					"image": "823a85c1d79bb5d31ce3c61c2c8f849f",
+					"sprite": "assets/images/acc-3.png",
+					"cost": 6,
+					"type": [
+						2
+					]
+				},
+				{
+					"name": "helo",
+					"image": "49b8d4d86c69c41929b138d6ce7b63e6",
+					"sprite": "assets/images/acc-4.png",
+					"cost": 9,
+					"type": [
+						2
+					]
+				},
+				{
+					"name": "angy",
+					"image": "3493b07a5f4ae2f11808af6def0f13d3",
+					"sprite": "assets/images/acc-5.png",
+					"cost": 12,
+					"type": [
+						2
+					]
 				}
 			],
 			"separators": [],

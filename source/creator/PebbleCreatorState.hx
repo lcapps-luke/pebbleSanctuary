@@ -197,18 +197,13 @@ class PebbleCreatorState extends FlxState
 	{
 		var bounds = new FlxRect(body.x, body.y, body.width, body.height);
 
-		var toStamp = new Array<FlxSprite>();
-		for (c in pebbleLayer.members)
+		pebbleLayer.forEach(c ->
 		{
-			var component:PebbleComponent = cast c;
-
-			toStamp.push(component.sprite);
-
-			bounds.left = Math.min(bounds.left, component.sprite.x);
-			bounds.top = Math.min(bounds.top, component.sprite.y);
-			bounds.right = Math.max(bounds.right, component.sprite.x + component.sprite.width);
-			bounds.bottom = Math.max(bounds.bottom, component.sprite.y + component.sprite.height);
-		}
+			bounds.left = Math.min(bounds.left, c.sprite.x);
+			bounds.top = Math.min(bounds.top, c.sprite.y);
+			bounds.right = Math.max(bounds.right, c.sprite.x + c.sprite.width);
+			bounds.bottom = Math.max(bounds.bottom, c.sprite.y + c.sprite.height);
+		});
 
 		var pebble = new FlxSprite();
 		pebble.makeGraphic(Math.round(bounds.width), Math.round(bounds.height), FlxColor.TRANSPARENT, true);
@@ -217,10 +212,14 @@ class PebbleCreatorState extends FlxState
 		var offsetY = Math.round(body.y - bounds.y);
 		pebble.stamp(body, offsetX, offsetY);
 
-		for (c in toStamp)
+		pebbleLayer.forEach(c ->
 		{
-			pebble.stamp(c, Math.round(c.x - body.x) + offsetX, Math.round(c.y - body.y) + offsetY);
-		}
+			// stamp doesn't seem to respect the origin or something
+			var shiftX = c.sprite.origin.x * (c.sprite.scale.x - 1);
+			var shiftY = c.sprite.origin.y * (c.sprite.scale.y - 1);
+
+			pebble.stamp(c.sprite, Math.round(c.sprite.x - body.x + shiftX) + offsetX, Math.round(c.sprite.y - body.y + shiftY) + offsetY);
+		});
 
 		PebbleGame.pebbleList.push({
 			sprite: pebble,
