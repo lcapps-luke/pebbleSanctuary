@@ -32,8 +32,7 @@ class ComponentMenuItem extends FlxTypedGroup<FlxSprite>
 		statIconSize = size / 6;
 
 		img = new FlxSprite(spr);
-		var pScale = Math.min(size / img.width, size / img.height);
-		img.scale.set(pScale, pScale);
+		img.setGraphicSize(size);
 		img.updateHitbox();
 		img.x = x + size / 2 - img.width / 2;
 		img.y = y + size / 2 - img.height / 2;
@@ -44,6 +43,8 @@ class ComponentMenuItem extends FlxTypedGroup<FlxSprite>
 		{
 			var lockMask = new FlxSprite(0, 0, AssetPaths.locked__png);
 			lockMask.setGraphicSize(size);
+			lockMask.x = x + size / 2 - lockMask.width / 2;
+			lockMask.y = y + size / 2 - lockMask.height / 2;
 			add(lockMask);
 
 			var spr = new FlxSprite(0, size - statIconSize * 1.5, PebbleGame.getIconForLocation(costType));
