@@ -50,16 +50,16 @@ class MainState extends FlxState
 		add(backFor);
 		backDiff = (backFar.width - FlxG.width) * 0.5;
 
-		var createButton = new Button("Create Pebble", true, onCreatePebble);
+		var createButton = new Button("Create Pebble", LARGE, onCreatePebble);
 		createButton.x = FlxG.width - createButton.width - 50;
 		createButton.y = 50;
 		add(createButton);
 
-		fullScreenButton = new Button(getFullscreenText(), false, toggleFullScreen);
+		fullScreenButton = new Button(getFullscreenText(), SMALL, toggleFullScreen);
 		fullScreenButton.setPosition(20, 20);
 		add(fullScreenButton);
 
-		var releaseButton = new Button("Release", false, onRelease);
+		var releaseButton = new Button("Release", SMALL, onRelease);
 		releaseButton.setMode(false);
 		releaseButton.setPosition(20, FlxG.height - releaseButton.height - 20);
 		add(releaseButton);

@@ -50,11 +50,11 @@ class PebbleOption extends FlxTypedGroup<FlxSprite>
 		makeStat(AssetPaths.icon_kitchen__png, pebble.stats.cooking, x, y, 1);
 		makeStat(AssetPaths.icon_mine__png, pebble.stats.mining, x, y, 2);
 
-		placeButton = new Button(actionName, false, onButton);
+		placeButton = new Button(actionName, SMALL, onButton);
 		placeButton.setPosition(x + SIZE / 2 - placeButton.width / 2, y + VIEW_HEIGHT);
 		add(placeButton);
 
-		removeButton = new Button(undoName, false, onButton);
+		removeButton = new Button(undoName, SMALL, onButton);
 		removeButton.setPosition(x + SIZE / 2 - placeButton.width / 2, y + VIEW_HEIGHT);
 		removeButton.setMode(false);
 		add(removeButton);

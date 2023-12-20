@@ -1,11 +1,10 @@
 package creator;
 
 import flixel.FlxBasic;
-import flixel.FlxG;
-import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
+import ui.Button;
 
 abstract class ComponentMenu extends FlxTypedGroup<FlxBasic>
 {
@@ -18,6 +17,8 @@ abstract class ComponentMenu extends FlxTypedGroup<FlxBasic>
 	private var x:Float;
 
 	private var items = new Array<ComponentMenuItem>();
+
+	public var componentColour(default, set):FlxColor = FlxColor.WHITE;
 
 	public function new(name:String, back:Void->Void, forward:Void->Void, x:Float, width:Float)
 	{
@@ -32,6 +33,21 @@ abstract class ComponentMenu extends FlxTypedGroup<FlxBasic>
 		title.x = width / 2 - title.width / 2 + x;
 		title.y = 40;
 		add(title);
+
+		if (back != null)
+		{
+			var navButton = new Button("<", MINI, back);
+			navButton.x = title.x - navButton.width * 1.5;
+			navButton.y = title.y;
+			add(navButton);
+		}
+		if (forward != null)
+		{
+			var navButton = new Button(">", MINI, forward);
+			navButton.x = title.x + title.width + navButton.width * 0.5;
+			navButton.y = title.y;
+			add(navButton);
+		}
 	}
 
 	private function addMenuItem(itm:ComponentMenuItem)
@@ -43,6 +59,7 @@ abstract class ComponentMenu extends FlxTypedGroup<FlxBasic>
 
 		itm.x = x + ix * cellSize + (cellSize / 2 - ComponentMenuItem.SIZE / 2);
 		itm.y = 150 + iy * cellSize;
+		itm.setColour(componentColour);
 
 		add(itm);
 		items.push(itm);
@@ -50,11 +67,12 @@ abstract class ComponentMenu extends FlxTypedGroup<FlxBasic>
 		itemQty++;
 	}
 
-	public function setComponentColour(c:FlxColor)
+	private function set_componentColour(value:FlxColor):FlxColor
 	{
 		for (i in items)
 		{
-			i.setColour(c);
+			i.setColour(value);
 		}
+		return componentColour = value;
 	}
 }

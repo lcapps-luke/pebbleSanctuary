@@ -90,8 +90,85 @@
 			],
 			"separators": [],
 			"props": {}
+		},
+		{
+			"name": "component",
+			"columns": [
+				{
+					"typeStr": "1",
+					"name": "name"
+				},
+				{
+					"typeStr": "7",
+					"name": "image",
+					"display": null
+				},
+				{
+					"typeStr": "13",
+					"name": "sprite",
+					"display": null
+				},
+				{
+					"typeStr": "9:ComponentType",
+					"name": "type",
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "cost"
+				}
+			],
+			"lines": [
+				{
+					"name": "basic eye",
+					"image": "4f3edcffc07cc51e15e6c07613e6b977",
+					"sprite": "assets/images/eye-1.png",
+					"cost": 0,
+					"type": [
+						0
+					]
+				},
+				{
+					"name": "v mouth",
+					"image": "b2b8a963e7527507322bc8891f7dfe5e",
+					"sprite": "assets/images/mouth-1.png",
+					"cost": 0,
+					"type": [
+						1
+					]
+				},
+				{
+					"name": "blush",
+					"image": "62be0206ca58352f4b5c2bc195fd59dd",
+					"sprite": "assets/images/acc-1.png",
+					"cost": 0,
+					"type": [
+						2
+					]
+				}
+			],
+			"separators": [],
+			"props": {}
 		}
 	],
-	"customTypes": [],
+	"customTypes": [
+		{
+			"name": "ComponentType",
+			"cases": [
+				{
+					"name": "EYE",
+					"args": []
+				},
+				{
+					"name": "MOUTH",
+					"args": []
+				},
+				{
+					"name": "OTHER",
+					"args": []
+				}
+			]
+		}
+	],
 	"compress": false
 }

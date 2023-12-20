@@ -76,7 +76,7 @@ abstract class AbstractAreaState extends FlxState
 			}
 		}
 
-		var back = new Button("Back", true, onBack);
+		var back = new Button("Back", LARGE, onBack);
 		back.setPosition(50, 50);
 		add(back);
 

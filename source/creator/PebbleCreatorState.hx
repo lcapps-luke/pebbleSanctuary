@@ -33,6 +33,7 @@ class PebbleCreatorState extends FlxState
 
 	private var colourPicker:ColorPicker;
 	private var menus = new Array<ComponentMenu>();
+	private var activeMenuIndex:Int = 0;
 
 	override function create()
 	{
@@ -65,20 +66,28 @@ class PebbleCreatorState extends FlxState
 		menuBg.x = FlxG.width - menuBg.width;
 		add(menuBg);
 
-		var colour = FlxColor.fromRGBFloat(FlxG.random.float(0.5, 1), FlxG.random.float(0.5, 1), FlxG.random.float(0.5, 1));
-		colourPicker = new ColorPicker(colour, menuBg.x + 20, FlxG.height - 170, menuBg.width - 50, 150);
+		colourPicker = new ColorPicker(FlxColor.WHITE, menuBg.x + 20, FlxG.height - 170, menuBg.width - 50, 150);
 		add(colourPicker);
 
-		var gemMenu = new GemMenu(null, null, onAddGem, menuBg.x, menuBg.width);
+		var gemMenu = new GemMenu(null, onMenuForward, onAddGem, menuBg.x, menuBg.width);
 		add(gemMenu);
 		menus.push(gemMenu);
+		colourPicker.colour = gemMenu.componentColour;
 
-		var finishButton = new Button("Finish", true, onFinish);
+		for (ct in [Data.ComponentType.EYE, Data.ComponentType.MOUTH, Data.ComponentType.OTHER])
+		{
+			var cm = new OtherMenu(ct, onMenuBack, ct == OTHER ? null : onMenuForward, onAddComponent, menuBg.x, menuBg.width);
+			cm.kill();
+			add(cm);
+			menus.push(cm);
+		}
+
+		var finishButton = new Button("Finish", LARGE, onFinish);
 		finishButton.x = FlxG.width * 0.35 - finishButton.width / 2;
 		finishButton.y = FlxG.height * 0.85;
 		add(finishButton);
 
-		var cancelButton = new Button("Cancel", false, onCancel);
+		var cancelButton = new Button("Cancel", SMALL, onCancel);
 		cancelButton.setMode(false);
 		cancelButton.x = 20;
 		cancelButton.y = 20;
@@ -93,7 +102,7 @@ class PebbleCreatorState extends FlxState
 			gem.destroy();
 		}
 
-		gem = new PebbleComponent(gemDef.sprite, x, y, colourPicker.getColour());
+		gem = new PebbleComponent(gemDef.sprite, x, y, colourPicker.colour);
 		gemStats.cooking = gemDef.cooking;
 		gemStats.mining = gemDef.mining;
 		gemStats.working = gemDef.working;
@@ -103,6 +112,18 @@ class PebbleCreatorState extends FlxState
 
 		add(gem);
 		heldComponent = gem;
+		justAdded = true;
+	}
+
+	private function onAddComponent(componentDefinition:Data.Component, x:Float, y:Float)
+	{
+		var component = new PebbleComponent(componentDefinition.sprite, x, y, colourPicker.colour);
+
+		FlxG.mouse.getPosition(mousePosition);
+		component.setSelected(true, mousePosition);
+
+		add(component);
+		heldComponent = component;
 		justAdded = true;
 	}
 
@@ -142,12 +163,15 @@ class PebbleCreatorState extends FlxState
 			if (heldComponent != null)
 			{
 				remove(heldComponent);
-				pebbleLayer.add(heldComponent);
 
-				if (!heldComponent.isWithin(workspace))
+				if (heldComponent.isWithin(workspace))
 				{
 					heldComponent.setSelected(false, null);
-					heldComponent.kill();
+					pebbleLayer.add(heldComponent);
+				}
+				else
+				{
+					heldComponent.destroy();
 				}
 
 				heldComponent = null;
@@ -165,10 +189,7 @@ class PebbleCreatorState extends FlxState
 			});
 		}
 
-		for (m in menus)
-		{
-			m.setComponentColour(colourPicker.getColour());
-		}
+		menus[activeMenuIndex].componentColour = colourPicker.colour;
 
 		justAdded = false;
 	}
@@ -214,5 +235,21 @@ class PebbleCreatorState extends FlxState
 	private function onCancel()
 	{
 		FlxG.switchState(new MainState());
+	}
+
+	private function onMenuBack()
+	{
+		menus[activeMenuIndex].kill();
+		activeMenuIndex -= 1;
+		colourPicker.colour = menus[activeMenuIndex].componentColour;
+		menus[activeMenuIndex].revive();
+	}
+
+	private function onMenuForward()
+	{
+		menus[activeMenuIndex].kill();
+		activeMenuIndex += 1;
+		colourPicker.colour = menus[activeMenuIndex].componentColour;
+		menus[activeMenuIndex].revive();
 	}
 }

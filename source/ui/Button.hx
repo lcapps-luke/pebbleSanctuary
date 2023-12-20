@@ -1,18 +1,19 @@
 package ui;
 
+import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 
 class Button extends FlxButton
 {
-	private var large:Bool;
+	private var type:ButtonType;
 
-	public function new(text:String, large:Bool, onClick:Void->Void)
+	public function new(text:String, type:ButtonType, onClick:Void->Void)
 	{
-		this.large = large;
+		this.type = type;
 		super(0, 0, text, onClick);
 
-		loadGraphic(large ? AssetPaths.button_large__png : AssetPaths.button_small__png);
+		loadGraphic(getTypeGraphic(type));
 
 		this.label.setFormat(AssetPaths.Schoolbell__ttf, 50, FlxColor.BLACK);
 		for (o in this.labelOffsets)
@@ -34,4 +35,21 @@ class Button extends FlxButton
 			this.setColorTransform(1, 0, 0);
 		}
 	}
+
+	private static function getTypeGraphic(t:ButtonType):FlxGraphicAsset
+	{
+		return switch (t)
+		{
+			case LARGE: AssetPaths.button_large__png;
+			case SMALL: AssetPaths.button_small__png;
+			case MINI: AssetPaths.button_mini__png;
+		}
+	}
+}
+
+enum ButtonType
+{
+	LARGE;
+	SMALL;
+	MINI;
 }

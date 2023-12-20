@@ -28,7 +28,7 @@ class UnlockSubstate extends FlxSubState
 
 		icon.x = FlxG.width / 2 - icon.width / 2;
 
-		var ok = new Button("OK", true, close);
+		var ok = new Button("OK", LARGE, close);
 		ok.x = FlxG.width / 2 - ok.width / 2;
 
 		var totalHeight = t.height + icon.height + ok.height;

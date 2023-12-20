@@ -9,6 +9,8 @@ import flixel.util.FlxSpriteUtil;
 
 class ColorPicker extends FlxTypedGroup<FlxBasic>
 {
+	public var colour(get, set):FlxColor;
+
 	@:keep
 	private var colorHue:Float;
 	@:keep
@@ -16,6 +18,7 @@ class ColorPicker extends FlxTypedGroup<FlxBasic>
 	@:keep
 	private var colorBri:Float;
 
+	private var hue:FlxSlider;
 	private var sat:FlxSlider;
 	private var bri:FlxSlider;
 
@@ -30,7 +33,7 @@ class ColorPicker extends FlxTypedGroup<FlxBasic>
 		colorSat = initial.saturation;
 		colorBri = initial.brightness;
 
-		var hue = new FlxSlider(this, "colorHue", x, y, 0, 360, Math.round(width), sliderHeight, 3, 0xFFFF0000, FlxColor.WHITE);
+		hue = new FlxSlider(this, "colorHue", x, y, 0, 360, Math.round(width), sliderHeight, 3, 0xFFFF0000, FlxColor.WHITE);
 		hideLabels(hue);
 
 		var chunk = hue.body.width / 360;
@@ -55,7 +58,7 @@ class ColorPicker extends FlxTypedGroup<FlxBasic>
 		sat.callback = v ->
 		{
 			updateBri();
-			updateHandle(sat, getColour());
+			updateHandle(sat, get_colour());
 		};
 
 		add(sat);
@@ -67,7 +70,7 @@ class ColorPicker extends FlxTypedGroup<FlxBasic>
 		bri.callback = v ->
 		{
 			updateSat();
-			updateHandle(bri, getColour());
+			updateHandle(bri, get_colour());
 		};
 
 		add(bri);
@@ -87,7 +90,7 @@ class ColorPicker extends FlxTypedGroup<FlxBasic>
 		var to = FlxColor.fromHSB(Math.round(colorHue), 1, colorBri);
 
 		FlxGradient.overlayGradientOnFlxSprite(sat.body, Math.round(sat.body.width), Math.round(sat.body.height), [from, to], 0, 0, 1, 0);
-		updateHandle(sat, getColour());
+		updateHandle(sat, get_colour());
 	}
 
 	private function updateBri()
@@ -96,7 +99,7 @@ class ColorPicker extends FlxTypedGroup<FlxBasic>
 		var to = FlxColor.fromHSB(Math.round(colorHue), colorSat, 1);
 
 		FlxGradient.overlayGradientOnFlxSprite(bri.body, Math.round(bri.body.width), Math.round(bri.body.height), [from, to], 0, 0, 1, 0);
-		updateHandle(bri, getColour());
+		updateHandle(bri, get_colour());
 	}
 
 	private function updateHandle(s:FlxSlider, selected:FlxColor)
@@ -105,7 +108,20 @@ class ColorPicker extends FlxTypedGroup<FlxBasic>
 		s.handle.setColorTransform(hCol.redFloat, hCol.greenFloat, hCol.blueFloat);
 	}
 
-	public inline function getColour():FlxColor
+	private function set_colour(value:FlxColor):FlxColor
+	{
+		colorHue = value.hue;
+		colorSat = value.saturation;
+		colorBri = value.brightness;
+
+		updateHandle(hue, FlxColor.fromHSB(colorHue, 1, 1));
+		updateSat();
+		updateBri();
+
+		return value;
+	}
+
+	private function get_colour():FlxColor
 	{
 		return FlxColor.fromHSB(colorHue, colorSat, colorBri);
 	}
