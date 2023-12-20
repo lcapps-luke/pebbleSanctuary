@@ -39,12 +39,12 @@ class OfficeAreaState extends AbstractAreaState
 
 	function createBackgroundSprites()
 	{
-		backFar = new FlxSprite(AssetPaths.main_bg_1__png);
+		backFar = new FlxSprite(AssetPaths.office_bg_1__png);
+		backFar.y = 250;
 
-		backMid = new FlxSprite(AssetPaths.main_bg_2__png);
-		backMid.y = FlxG.height - backMid.height;
+		backMid = new FlxSprite(AssetPaths.office_bg_2__png);
 
-		backFor = new FlxSprite(AssetPaths.main_bg_3__png);
+		backFor = new FlxSprite(AssetPaths.office_bg_3__png);
 		backFor.y = FlxG.height - backFor.height;
 	}
 
@@ -56,22 +56,22 @@ class OfficeAreaState extends AbstractAreaState
 		group.add(w);
 
 		w = new FlxSprite();
-		w.makeGraphic(FlxG.width, 320, FlxColor.TRANSPARENT);
+		w.makeGraphic(FlxG.width, 250, FlxColor.TRANSPARENT);
 		w.setPosition(0, FlxG.height - w.height);
 		w.immovable = true;
 		group.add(w);
 
 		w = new FlxSprite();
-		w.makeGraphic(20, FlxG.height, FlxColor.TRANSPARENT);
+		w.makeGraphic(40, FlxG.height, FlxColor.TRANSPARENT);
 		w.immovable = true;
 		group.add(w);
 
 		w = new FlxSprite();
-		w.makeGraphic(120, FlxG.height, FlxColor.TRANSPARENT);
+		w.makeGraphic(40, FlxG.height, FlxColor.TRANSPARENT);
 		w.setPosition(FlxG.width - w.width, 0);
 		w.immovable = true;
 		group.add(w);
 
-		return FlxG.height - 320;
+		return FlxG.height - 250;
 	}
 }
