@@ -271,6 +271,15 @@
 					"type": [
 						2
 					]
+				},
+				{
+					"name": "neko ear",
+					"image": "09f6b014cb608ed051f7762af2703588",
+					"sprite": "assets/images/acc-6.png",
+					"cost": 15,
+					"type": [
+						2
+					]
 				}
 			],
 			"separators": [],

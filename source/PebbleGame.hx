@@ -5,6 +5,7 @@ import flixel.math.FlxMath;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
+import haxe.ds.ArraySort;
 
 class PebbleGame
 {
@@ -59,17 +60,19 @@ class PebbleGame
 
 	public static function getUnlockQueueForLocation(locationType:PebbleLocation):Array<Int>
 	{
-		return switch (locationType)
+		var list = switch (locationType)
 		{
 			case MINE:
 				Data.gem.all.map(g -> g.cost); // gem type unlocks
 			case KITCHEN:
 				[2, 4, 6, 8, 10]; // pebble slot unlocks
 			case OFFICE:
-				return Data.component.all.map(c -> c.cost); // pebble creator unlocks
+				Data.component.all.map(c -> c.cost); // pebble creator unlocks
 			case NONE:
 				[];
 		}
+		list.sort((a, b) -> a - b);
+		return list;
 	}
 
 	public static function getUnlockItem(locationType:PebbleLocation, cost:Int):FlxSprite
@@ -81,7 +84,7 @@ class PebbleGame
 			case KITCHEN:
 				makeText("New Pebble Slot!");
 			case OFFICE:
-				makeText("New Pebble Parts!");
+				new FlxSprite(Data.component.all.filter(g -> g.cost == cost)[0].sprite);
 			case NONE:
 				null;
 		}
