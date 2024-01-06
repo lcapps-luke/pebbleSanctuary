@@ -3,10 +3,10 @@
 	xsi:schemaLocation="http://lime.software/project/1.0.2 http://lime.software/xsd/project-1.0.2.xsd">
 
 	<!-- _________________________ Application Settings _________________________ -->
-	<set name="version" value="1.0.0" />
+	<set name="version" value="1.0.1" />
 	<prebuild command="prebuild.bat ${version}"/>
 
-	<app file="PebbleSanctuary" main="Main" preloader="flixel.system.FlxPreloader" />
+	<app file="PebbleSanctuary" main="Main" preloader="Preloader" />
 	<meta title="Pebble Sanctuary" package="uk.co.lcapps.holo.pebble" company="LC-Apps" company-url="https://lc-apps.co.uk/" version="${version}"/>
 
 	<!--Minimum without FLX_NO_GAMEPAD: 11.8, without FLX_NO_NATIVE_CURSOR: 11.2-->
