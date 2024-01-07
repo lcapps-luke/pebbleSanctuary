@@ -46,6 +46,7 @@
 	<!--<haxelib name="nape-haxe4" />-->
 
 	<haxelib name="castle" />
+	<haxelib name="format" />
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 

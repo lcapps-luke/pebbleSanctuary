@@ -12,6 +12,7 @@ import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil;
+import lime.tools.GUID;
 import ui.Button;
 
 class PebbleCreatorState extends FlxState
@@ -226,6 +227,7 @@ class PebbleCreatorState extends FlxState
 		});
 
 		PebbleGame.pebbleList.push({
+			id: GUID.uuid(),
 			sprite: pebble,
 			stats: gemStats,
 			location: NONE

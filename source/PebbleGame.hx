@@ -5,10 +5,25 @@ import flixel.math.FlxMath;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
-import haxe.ds.ArraySort;
+import lime.app.Future;
+import lime.utils.PackedAssetLibrary;
+import save.AbstractSave;
+import save.SharedObjectSave;
+#if desktop
+import save.FileSystemSave;
+#end
 
 class PebbleGame
 {
+	#if desktop
+	private static var saveSys:AbstractSave = new FileSystemSave();
+	#end
+	#if !desktop
+	private static var saveSys:AbstractSave = new SharedObjectSave();
+	#end
+
+	private static var loaded:Bool = false;
+
 	public static var cursorGrab(default, default):Bool = false;
 
 	public static var pebbleSlots:Int = 2;
@@ -107,10 +122,32 @@ class PebbleGame
 			default: null;
 		}
 	}
+
+	public static function load():Future<Bool>
+	{
+		if (!loaded)
+		{
+			return saveSys.loadGame().then(p ->
+			{
+				pebbleList = p;
+				calculateStats();
+				loaded = true;
+				return Future.withValue(true);
+			});
+		}
+
+		return Future.withValue(false);
+	}
+
+	public static function save()
+	{
+		saveSys.saveGame(pebbleList);
+	}
 }
 
 typedef PebbleDefinition =
 {
+	var id:String;
 	var sprite:FlxSprite;
 	var stats:PebbleStats;
 	var location:PebbleLocation;

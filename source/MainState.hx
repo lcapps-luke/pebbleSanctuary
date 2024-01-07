@@ -10,7 +10,6 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.addons.effects.chainable.FlxEffectSprite;
-import flixel.addons.effects.chainable.FlxOutlineEffect;
 import flixel.addons.ui.FlxClickArea;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
@@ -18,8 +17,10 @@ import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
-import haxe.display.Position.Location;
 import ui.Button;
+#if !hl
+import flixel.addons.effects.chainable.FlxOutlineEffect;
+#end
 
 class MainState extends FlxState
 {
@@ -29,8 +30,14 @@ class MainState extends FlxState
 	private var mousePosition = new FlxPoint();
 	private var backDiff:Float;
 
+	private var createButton:Button;
+	private var qty:FlxText;
+	private var locationQty = new Map<PebbleLocation, FlxText>();
+
 	private var areaSpriteLink = new Array<AreaSprite>();
 	private var fullScreenButton:Button;
+
+	private var pebblesLoaded = false;
 
 	override public function create()
 	{
@@ -53,18 +60,16 @@ class MainState extends FlxState
 		add(backFor);
 		backDiff = (backFar.width - FlxG.width) * 0.5;
 
-		var createButton = new Button("Create Pebble", LARGE, onCreatePebble);
+		createButton = new Button("Create Pebble", LARGE, onCreatePebble);
 		createButton.x = FlxG.width - createButton.width - 50;
 		createButton.y = 50;
-		if (PebbleGame.pebbleList.length < PebbleGame.pebbleSlots)
-		{
-			add(createButton);
-		}
+		createButton.visible = false;
+		add(createButton);
 
-		var qty = new FlxText();
+		qty = new FlxText();
 		qty.setFormat(AssetPaths.Schoolbell__ttf, 50, FlxColor.WHITE, CENTER, OUTLINE, FlxColor.BLACK);
 		qty.borderSize = 3;
-		qty.text = '${PebbleGame.pebbleList.length} / ${PebbleGame.pebbleSlots} Pebbles';
+		qty.text = 'Loading Pebbles';
 		qty.x = createButton.x + createButton.width / 2 - qty.width / 2;
 		qty.y = createButton.height + 10;
 		add(qty);
@@ -77,6 +82,37 @@ class MainState extends FlxState
 		releaseButton.setMode(false);
 		releaseButton.setPosition(20, FlxG.height - releaseButton.height - 20);
 		add(releaseButton);
+
+		PebbleGame.load().onComplete(loaded ->
+		{
+			if (!loaded)
+			{
+				PebbleGame.save();
+			}
+			onLoaded();
+		}).onError(e ->
+			{
+				FlxG.log.error(e);
+				onLoaded();
+			});
+	}
+
+	private function onLoaded()
+	{
+		pebblesLoaded = true;
+
+		if (PebbleGame.pebbleList.length < PebbleGame.pebbleSlots)
+		{
+			createButton.visible = true;
+		}
+
+		for (kv in locationQty.keyValueIterator())
+		{
+			var pebbleQty = PebbleGame.pebbleList.filter(p -> p.location == kv.key).length;
+			kv.value.text = '$pebbleQty Pebbles';
+		}
+
+		qty.text = '${PebbleGame.pebbleList.length} / ${PebbleGame.pebbleSlots} Pebbles';
 	}
 
 	private function addLocationSpr(spr:FlxGraphicAsset, xPercent:Float, yBottom:Float, onClick:Void->Void, type:PebbleLocation)
@@ -112,35 +148,52 @@ class MainState extends FlxState
 		var qty = new FlxText();
 		qty.setFormat(AssetPaths.Schoolbell__ttf, 50, FlxColor.WHITE, CENTER, OUTLINE, FlxColor.BLACK);
 		qty.borderSize = 3;
-		qty.text = '$pebbleQty Pebbles';
+		qty.text = 'Loading Pebbles';
 		qty.x = office.x + office.width / 2 - qty.width / 2;
 		qty.y = office.y;
 		add(qty);
+
+		locationQty.set(type, qty);
 	}
 
 	private function onCreatePebble()
 	{
-		FlxG.switchState(new PebbleCreatorState());
+		if (pebblesLoaded)
+		{
+			FlxG.switchState(new PebbleCreatorState());
+		}
 	}
 
 	private function onGotoMine()
 	{
-		FlxG.switchState(new MineAreaState());
+		if (pebblesLoaded)
+		{
+			FlxG.switchState(new MineAreaState());
+		}
 	}
 
 	private function onGotoKitchen()
 	{
-		FlxG.switchState(new KitchenAreaState());
+		if (pebblesLoaded)
+		{
+			FlxG.switchState(new KitchenAreaState());
+		}
 	}
 
 	private function onGotoOffice()
 	{
-		FlxG.switchState(new OfficeAreaState());
+		if (pebblesLoaded)
+		{
+			FlxG.switchState(new OfficeAreaState());
+		}
 	}
 
 	private function onRelease()
 	{
-		FlxG.switchState(new ReleaseAreaState());
+		if (pebblesLoaded)
+		{
+			FlxG.switchState(new ReleaseAreaState());
+		}
 	}
 
 	override public function update(elapsed:Float)

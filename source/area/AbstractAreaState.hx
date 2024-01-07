@@ -99,7 +99,7 @@ abstract class AbstractAreaState extends FlxState
 		FlxG.collide(pebbleGroup);
 		super.update(elapsed);
 
-		if (currentPoints != displayPoints)
+		if (Math.round(currentPoints) != displayPoints)
 		{
 			displayPoints = currentPoints;
 			title.text = getTitleText(displayPoints, nextUnlockQty);
