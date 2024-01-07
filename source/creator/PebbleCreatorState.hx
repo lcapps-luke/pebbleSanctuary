@@ -4,8 +4,9 @@ import PebbleGame.PebbleStats;
 import creator.ColourPicker.ColorPicker;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.FlxState;
 import flixel.addons.display.FlxBackdrop;
+import flixel.addons.transition.FlxTransitionableState;
+import flixel.addons.transition.TransitionData;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
@@ -15,7 +16,7 @@ import flixel.util.FlxSpriteUtil;
 import lime.tools.GUID;
 import ui.Button;
 
-class PebbleCreatorState extends FlxState
+class PebbleCreatorState extends FlxTransitionableState
 {
 	private static inline var WORKSPACE_MARGIN = 100;
 
@@ -36,10 +37,25 @@ class PebbleCreatorState extends FlxState
 	private var menus = new Array<ComponentMenu>();
 	private var activeMenuIndex:Int = 0;
 
+	public function new()
+	{
+		var td = new TransitionData(FADE, FlxColor.BLACK, 0.2);
+		super(td, td);
+	}
+
 	override function create()
 	{
 		this.bgColor = FlxColor.WHITE;
 		super.create();
+
+		if (FlxG.sound.music != null && FlxG.sound.music.playing)
+		{
+			FlxG.sound.music.fadeOut(0.2, 0, function(t)
+			{
+				FlxG.sound.playMusic(AssetPaths.cafe_latte__ogg, 0);
+				FlxG.sound.music.fadeIn(0.2);
+			});
+		}
 
 		background = new FlxBackdrop(AssetPaths.create_bg__png);
 		add(background);
@@ -233,12 +249,12 @@ class PebbleCreatorState extends FlxState
 			location: NONE
 		});
 
-		FlxG.switchState(new MainState());
+		FlxG.switchState(new MainState(true));
 	}
 
 	private function onCancel()
 	{
-		FlxG.switchState(new MainState());
+		FlxG.switchState(new MainState(true));
 	}
 
 	private function onMenuBack()
@@ -255,5 +271,17 @@ class PebbleCreatorState extends FlxState
 		activeMenuIndex += 1;
 		colourPicker.colour = menus[activeMenuIndex].componentColour;
 		menus[activeMenuIndex].revive();
+	}
+
+	override function startOutro(onOutroComplete:() -> Void)
+	{
+		super.startOutro(onOutroComplete);
+		FlxG.sound?.music?.fadeOut(0.2);
+	}
+
+	override function finishTransOut()
+	{
+		super.finishTransOut();
+		FlxG.sound?.music?.stop();
 	}
 }

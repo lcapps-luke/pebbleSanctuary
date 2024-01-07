@@ -7,6 +7,10 @@ Save data is stored differently depending on the platform.
 - **browser** - local storage
 
 
-## credits
+## Credits
 Characters are the property of cover corp.
 See their fan work terms for details [https://en.hololive.tv/terms](https://en.hololive.tv/terms).
+
+### Music
+- "milk and sugar" by [茶葉のぎか](https://lit.link/en/nogika) ([booth](https://nogikashop.booth.pm/items/3786632), [youtube](https://www.youtube.com/watch?v=DTg1tmnFTFs))
+- "cafe latte" by [茶葉のぎか](https://lit.link/en/nogika) ([booth](https://nogikashop.booth.pm/items/4371695), [youtube](https://www.youtube.com/watch?v=Nklt3Fvb02k))

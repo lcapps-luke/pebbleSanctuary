@@ -4,7 +4,6 @@ import PebbleGame.PebbleDefinition;
 import PebbleGame.PebbleLocation;
 import flixel.FlxG;
 import haxe.crypto.Base64;
-import haxe.io.Bytes;
 import haxe.io.BytesInput;
 import haxe.io.BytesOutput;
 import lime.app.Future;
@@ -30,7 +29,6 @@ class SharedObjectSave extends AbstractSave
 
 		var out = new BytesOutput();
 		this.writePngData(p, out);
-		trace(Base64.encode(out.getBytes()));
 		pebbleMap.set(p.id, Base64.encode(out.getBytes()));
 	}
 

@@ -6,11 +6,12 @@ import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import lime.app.Future;
-import lime.utils.PackedAssetLibrary;
 import save.AbstractSave;
-import save.SharedObjectSave;
 #if desktop
 import save.FileSystemSave;
+#end
+#if !desktop
+import save.SharedObjectSave;
 #end
 
 class PebbleGame

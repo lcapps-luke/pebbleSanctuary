@@ -136,8 +136,6 @@ class FileSystemSave extends AbstractSave
 
 		return pngData.sprite.then(spr ->
 		{
-			input.close();
-
 			return Future.withValue({
 				id: p.id,
 				location: p.location,

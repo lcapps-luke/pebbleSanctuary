@@ -8,8 +8,9 @@ import area.ReleaseAreaState;
 import creator.PebbleCreatorState;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.FlxState;
 import flixel.addons.effects.chainable.FlxEffectSprite;
+import flixel.addons.transition.FlxTransitionableState;
+import flixel.addons.transition.TransitionData;
 import flixel.addons.ui.FlxClickArea;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
@@ -22,8 +23,10 @@ import ui.Button;
 import flixel.addons.effects.chainable.FlxOutlineEffect;
 #end
 
-class MainState extends FlxState
+class MainState extends FlxTransitionableState
 {
+	private static var musicStarted = false;
+
 	private var backFar:FlxSprite;
 	private var backMid:FlxSprite;
 	private var backFor:FlxSprite;
@@ -39,10 +42,21 @@ class MainState extends FlxState
 
 	private var pebblesLoaded = false;
 
+	public function new(transition:Bool = false)
+	{
+		var td = new TransitionData(FADE, FlxColor.BLACK, 0.2);
+		super(transition ? td : null, td);
+	}
+
 	override public function create()
 	{
 		this.bgColor = FlxColor.BLACK;
 		super.create();
+
+		if (Main.canPlayMusic.canPlay)
+		{
+			playMusic();
+		}
 
 		backFar = new FlxSprite(AssetPaths.main_bg_1__png);
 		add(backFar);
@@ -72,9 +86,9 @@ class MainState extends FlxState
 		qty.text = 'Loading Pebbles';
 		add(qty);
 
-		fullScreenButton = new Button(getFullscreenText(), SMALL, toggleFullScreen);
-		fullScreenButton.setPosition(20, 20);
-		add(fullScreenButton);
+		var menuButton = new Button("Menu", SMALL, showMenu);
+		menuButton.setPosition(20, 20);
+		add(menuButton);
 
 		var releaseButton = new Button("Release", SMALL, onRelease);
 		releaseButton.setMode(false);
@@ -196,6 +210,11 @@ class MainState extends FlxState
 	{
 		super.update(elapsed);
 
+		if (!musicStarted && Main.canPlayMusic.canPlay)
+		{
+			playMusic();
+		}
+
 		FlxG.mouse.getPosition(mousePosition);
 		var scrollPercent = mousePosition.x / FlxG.width;
 		backFar.x = FlxMath.bound(scrollPercent * backDiff - backDiff, -backDiff, 0);
@@ -207,15 +226,19 @@ class MainState extends FlxState
 		}
 	}
 
-	private function toggleFullScreen()
+	private function playMusic()
 	{
-		FlxG.fullscreen = !FlxG.fullscreen;
-		fullScreenButton.text = getFullscreenText();
+		if (FlxG.sound.music == null || !FlxG.sound.music.playing)
+		{
+			FlxG.sound.playMusic(AssetPaths.milk_and_sugar__ogg, 0);
+			FlxG.sound.music.fadeIn();
+		}
+		musicStarted = true;
 	}
 
-	private inline function getFullscreenText():String
+	private function showMenu()
 	{
-		return FlxG.fullscreen ? "Windowed" : "Fullscreen";
+		openSubState(new MenuSubState());
 	}
 }
 

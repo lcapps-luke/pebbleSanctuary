@@ -38,7 +38,7 @@ class Preloader extends FlxBasePreloader
 
 	override public function new()
 	{
-		super(2);
+		super(1);
 	}
 
 	override function create()

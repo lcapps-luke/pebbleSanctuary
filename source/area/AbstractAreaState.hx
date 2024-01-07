@@ -6,6 +6,8 @@ import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.addons.transition.FlxTransitionableState;
+import flixel.addons.transition.TransitionData;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
@@ -14,7 +16,7 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import ui.Button;
 
-abstract class AbstractAreaState extends FlxState
+abstract class AbstractAreaState extends FlxTransitionableState
 {
 	private var locationType:PebbleLocation;
 	private var unlockQueue:Array<Int>;
@@ -35,7 +37,8 @@ abstract class AbstractAreaState extends FlxState
 
 	public function new(locationType:PebbleLocation)
 	{
-		super();
+		var td = new TransitionData(FADE, FlxColor.BLACK, 0.2);
+		super(td, td);
 		this.locationType = locationType;
 		unlockQueue = getUnlockQueue();
 	}
@@ -101,7 +104,7 @@ abstract class AbstractAreaState extends FlxState
 
 		if (Math.round(currentPoints) != displayPoints)
 		{
-			displayPoints = currentPoints;
+			displayPoints = Math.round(currentPoints);
 			title.text = getTitleText(displayPoints, nextUnlockQty);
 		}
 
@@ -162,7 +165,7 @@ abstract class AbstractAreaState extends FlxState
 
 	private function onBack()
 	{
-		FlxG.switchState(new MainState());
+		FlxG.switchState(new MainState(true));
 	}
 
 	private function getNextUnlockQty():Int
