@@ -8,6 +8,7 @@ import haxe.io.Bytes;
 import haxe.io.BytesInput;
 import haxe.io.BytesOutput;
 import lime.app.Future;
+import save.AbstractSave.GameData;
 import save.AbstractSave.PebbleReference;
 
 class SharedObjectSave extends AbstractSave
@@ -90,5 +91,15 @@ class SharedObjectSave extends AbstractSave
 		}
 
 		return pebbleMap;
+	}
+
+	function loadGameData():Null<GameData>
+	{
+		return FlxG.save.data.game;
+	}
+
+	function saveGameData(d:GameData)
+	{
+		FlxG.save.data.game = d;
 	}
 }

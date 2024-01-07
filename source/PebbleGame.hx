@@ -129,8 +129,10 @@ class PebbleGame
 		{
 			return saveSys.loadGame().then(p ->
 			{
-				pebbleList = p;
+				pebbleList = p.pebbles;
+				bestStats = p.maxStats;
 				calculateStats();
+
 				loaded = true;
 				return Future.withValue(true);
 			});
@@ -141,7 +143,10 @@ class PebbleGame
 
 	public static function save()
 	{
-		saveSys.saveGame(pebbleList);
+		saveSys.saveGame({
+			pebbles: pebbleList,
+			maxStats: bestStats
+		});
 	}
 }
 

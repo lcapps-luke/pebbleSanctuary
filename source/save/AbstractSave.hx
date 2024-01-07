@@ -3,6 +3,7 @@ package save;
 import PebbleGame.PebbleDefinition;
 import PebbleGame.PebbleLocation;
 import PebbleGame.PebbleStats;
+import flixel.FlxG;
 import flixel.FlxSprite;
 import format.png.Data;
 import format.png.Reader;
@@ -26,11 +27,11 @@ abstract class AbstractSave
 
 	public function new() {}
 
-	public function saveGame(pebbles:Array<PebbleDefinition>)
+	public function saveGame(data:SaveData)
 	{
 		var current = loadPebbleReferences();
 
-		for (p in pebbles)
+		for (p in data.pebbles)
 		{
 			var currentPebble = current.filter(r -> r.id == p.id).pop();
 			if (currentPebble == null)
@@ -43,7 +44,7 @@ abstract class AbstractSave
 			}
 		}
 
-		var newIds = pebbles.map(p -> p.id);
+		var newIds = data.pebbles.map(p -> p.id);
 		for (c in current)
 		{
 			if (!newIds.contains(c.id))
@@ -52,16 +53,28 @@ abstract class AbstractSave
 			}
 		}
 
+		saveGameData({
+			version: SAVE_VERSION,
+			maxStats: data.maxStats
+		});
+
 		endSave();
 	}
 
-	public function loadGame():Future<Array<PebbleDefinition>>
+	public function loadGame():Future<SaveData>
 	{
 		var pebbleRefs = loadPebbleReferences();
 
 		if (pebbleRefs.length == 0)
 		{
-			return Future.withValue([]);
+			return Future.withValue({
+				pebbles: [],
+				maxStats: {
+					mining: 0,
+					cooking: 0,
+					working: 0
+				}
+			});
 		}
 
 		var res = new Array<PebbleDefinition>();
@@ -83,10 +96,26 @@ abstract class AbstractSave
 			}
 		}
 
+		var gameData = loadGameData();
+		if (gameData == null)
+		{
+			gameData = {
+				version: SAVE_VERSION,
+				maxStats: {
+					mining: 0,
+					working: 0,
+					cooking: 0
+				}
+			}
+		}
+
 		return last.then(p ->
 		{
 			res.push(p);
-			return Future.withValue(res);
+			return Future.withValue({
+				pebbles: res,
+				maxStats: gameData.maxStats
+			});
 		});
 	};
 
@@ -136,7 +165,16 @@ abstract class AbstractSave
 
 		if (pebbleData == null)
 		{
-			// throw new ArgumentException("input", 'PNG is missing "$PNG_CHUNK_ID" chunk');
+			FlxG.log.error('Pebble PNG is missing "$PNG_CHUNK_ID" chunk. Will use default data instead.');
+
+			pebbleData = {
+				saveVersion: SAVE_VERSION,
+				stats: {
+					mining: 1,
+					working: 1,
+					cooking: 1
+				}
+			};
 		}
 
 		return {
@@ -154,6 +192,10 @@ abstract class AbstractSave
 	abstract private function movePebble(p:PebbleDefinition, from:PebbleLocation):Void;
 
 	abstract private function deletePebble(p:PebbleReference):Void;
+
+	abstract private function loadGameData():Null<GameData>;
+
+	abstract private function saveGameData(d:GameData):Void;
 
 	private function endSave() {}
 }
@@ -174,4 +216,16 @@ typedef PebbleLoadData =
 {
 	var sprite:Future<FlxSprite>;
 	var stats:PebbleStats;
+}
+
+typedef SaveData =
+{
+	var pebbles:Array<PebbleDefinition>;
+	var maxStats:PebbleStats;
+}
+
+typedef GameData =
+{
+	var version:Int;
+	var maxStats:PebbleStats;
 }

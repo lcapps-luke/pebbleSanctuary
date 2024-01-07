@@ -2,9 +2,11 @@ package save;
 
 import PebbleGame.PebbleDefinition;
 import PebbleGame.PebbleLocation;
+import haxe.Json;
 import haxe.io.Path;
 import lime.app.Future;
 import lime.system.System;
+import save.AbstractSave.GameData;
 import save.AbstractSave.PebbleReference;
 import sys.FileSystem;
 import sys.io.File;
@@ -12,6 +14,7 @@ import sys.io.File;
 class FileSystemSave extends AbstractSave
 {
 	private static inline var DIR_PEBBLES = "pebbles";
+	private static inline var FILE_GAME = "game.json";
 
 	function loadPebbleReferences():Array<PebbleReference>
 	{
@@ -142,5 +145,25 @@ class FileSystemSave extends AbstractSave
 				sprite: spr
 			});
 		});
+	}
+
+	function loadGameData():Null<GameData>
+	{
+		var path = Path.join([System.applicationStorageDirectory, FILE_GAME]);
+
+		if (!FileSystem.exists(path))
+		{
+			return null;
+		}
+
+		return Json.parse(File.getContent(path));
+	}
+
+	function saveGameData(d:GameData)
+	{
+		var path = Path.join([System.applicationStorageDirectory, FILE_GAME]);
+		FileSystem.createDirectory(Path.directory(path));
+
+		File.saveContent(path, Json.stringify(d));
 	}
 }

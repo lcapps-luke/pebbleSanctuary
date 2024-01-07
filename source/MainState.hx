@@ -66,12 +66,10 @@ class MainState extends FlxState
 		createButton.visible = false;
 		add(createButton);
 
-		qty = new FlxText();
+		qty = new FlxText(createButton.x - 50, createButton.height + 10, createButton.width + 100);
 		qty.setFormat(AssetPaths.Schoolbell__ttf, 50, FlxColor.WHITE, CENTER, OUTLINE, FlxColor.BLACK);
 		qty.borderSize = 3;
 		qty.text = 'Loading Pebbles';
-		qty.x = createButton.x + createButton.width / 2 - qty.width / 2;
-		qty.y = createButton.height + 10;
 		add(qty);
 
 		fullScreenButton = new Button(getFullscreenText(), SMALL, toggleFullScreen);
@@ -145,12 +143,10 @@ class MainState extends FlxState
 
 		var pebbleQty = PebbleGame.pebbleList.filter(p -> p.location == type).length;
 
-		var qty = new FlxText();
+		var qty = new FlxText(office.x, office.y, office.width);
 		qty.setFormat(AssetPaths.Schoolbell__ttf, 50, FlxColor.WHITE, CENTER, OUTLINE, FlxColor.BLACK);
 		qty.borderSize = 3;
 		qty.text = 'Loading Pebbles';
-		qty.x = office.x + office.width / 2 - qty.width / 2;
-		qty.y = office.y;
 		add(qty);
 
 		locationQty.set(type, qty);
