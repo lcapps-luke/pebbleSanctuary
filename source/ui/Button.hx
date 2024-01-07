@@ -1,6 +1,8 @@
 package ui;
 
+import flixel.FlxG;
 import flixel.system.FlxAssets.FlxGraphicAsset;
+import flixel.system.FlxAssets.FlxSoundAsset;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 
@@ -8,10 +10,16 @@ class Button extends FlxButton
 {
 	private var type:ButtonType;
 
+	public var sound:FlxSoundAsset = AssetPaths.ui_button__ogg;
+
 	public function new(text:String, type:ButtonType, onClick:Void->Void)
 	{
 		this.type = type;
-		super(0, 0, text, onClick);
+		super(0, 0, text, function()
+		{
+			FlxG.sound.play(sound).persist = true;
+			onClick();
+		});
 
 		loadGraphic(getTypeGraphic(type));
 

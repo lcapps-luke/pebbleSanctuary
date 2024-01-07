@@ -67,6 +67,11 @@ class PebbleComponent extends FlxTypedGroup<FlxSprite>
 		}
 		else
 		{
+			if (mode == NONE)
+			{
+				FlxG.sound.play(AssetPaths.component_pick__ogg);
+			}
+
 			holdPoint.subtract(sprite.x, sprite.y);
 			mode = MOVE;
 		}
@@ -90,6 +95,11 @@ class PebbleComponent extends FlxTypedGroup<FlxSprite>
 
 		if (FlxG.mouse.justReleased)
 		{
+			if (mode == MOVE)
+			{
+				FlxG.sound.play(AssetPaths.component_place__ogg);
+			}
+
 			mode = NONE;
 			updateHandles();
 		}

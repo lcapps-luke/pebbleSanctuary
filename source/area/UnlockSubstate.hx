@@ -22,6 +22,8 @@ class UnlockSubstate extends FlxSubState
 	{
 		super.create();
 
+		FlxG.sound.play(AssetPaths.component_unlock__ogg);
+
 		var t = new FlxText(0, 0, 0, "Unlocked!");
 		t.setFormat(AssetPaths.Schoolbell__ttf, 100, FlxColor.BLACK, CENTER);
 		t.x = FlxG.width / 2 - t.width / 2;

@@ -26,7 +26,6 @@ abstract class ComponentMenu extends FlxTypedGroup<FlxBasic>
 		this.width = width;
 		this.x = x;
 
-		// TODO add nav buttons
 		var title = new FlxText();
 		title.setFormat(AssetPaths.Schoolbell__ttf, 50);
 		title.text = name;
@@ -39,6 +38,7 @@ abstract class ComponentMenu extends FlxTypedGroup<FlxBasic>
 			var navButton = new Button("<", MINI, back);
 			navButton.x = title.x - navButton.width * 1.5;
 			navButton.y = title.y;
+			navButton.sound = AssetPaths.component_type_change__ogg;
 			add(navButton);
 		}
 		if (forward != null)
@@ -46,6 +46,7 @@ abstract class ComponentMenu extends FlxTypedGroup<FlxBasic>
 			var navButton = new Button(">", MINI, forward);
 			navButton.x = title.x + title.width + navButton.width * 0.5;
 			navButton.y = title.y;
+			navButton.sound = AssetPaths.component_type_change__ogg;
 			add(navButton);
 		}
 	}
