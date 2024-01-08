@@ -12,6 +12,8 @@ import flixel.util.FlxDestroyUtil;
 
 class PebbleComponent extends FlxTypedGroup<FlxSprite>
 {
+	private static inline var MIN_SIZE:Float = 40;
+
 	public var sprite(default, null):FlxSprite;
 
 	private var selected:Bool = false;
@@ -126,7 +128,11 @@ class PebbleComponent extends FlxTypedGroup<FlxSprite>
 		{
 			pressPoint.subtract(sprite.x, sprite.y);
 			pressPoint.subtract(holdPoint.x, holdPoint.y);
-			sprite.setGraphicSize(pressPoint.x, pressPoint.y);
+
+			sprite.flipX = pressPoint.x < 0;
+			sprite.flipY = pressPoint.y < 0;
+
+			sprite.setGraphicSize(Math.max(Math.abs(pressPoint.x), MIN_SIZE), Math.max(Math.abs(pressPoint.y), MIN_SIZE));
 			sprite.updateHitbox();
 			sprite.centerOrigin();
 		}
@@ -135,7 +141,7 @@ class PebbleComponent extends FlxTypedGroup<FlxSprite>
 	private function updateHandles()
 	{
 		rotatePoint.x = sprite.x + sprite.width;
-		rotatePoint.y = sprite.y;
+		rotatePoint.y = sprite.y - rotatePoint.height;
 		rotatePoint.visible = selected && mode == NONE;
 
 		scalePoint.x = sprite.x + sprite.width;

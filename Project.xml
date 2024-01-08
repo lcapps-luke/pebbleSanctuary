@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://lime.software/project/1.0.2 http://lime.software/xsd/project-1.0.2.xsd">
 
 	<!-- _________________________ Application Settings _________________________ -->
-	<set name="version" value="1.1.0" />
+	<set name="version" value="1.1.1" />
 	<prebuild command="prebuild.bat ${version}"/>
 
 	<app file="PebbleSanctuary" main="Main" preloader="Preloader" />
