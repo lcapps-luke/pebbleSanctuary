@@ -6,6 +6,8 @@ import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.addons.nape.FlxNapeSpace;
+import flixel.addons.nape.FlxNapeSprite;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.transition.TransitionData;
 import flixel.group.FlxGroup.FlxTypedGroup;
@@ -14,6 +16,7 @@ import flixel.math.FlxPoint;
 import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
+import nape.phys.Material;
 import ui.Button;
 
 abstract class AbstractAreaState extends FlxTransitionableState
@@ -56,10 +59,16 @@ abstract class AbstractAreaState extends FlxTransitionableState
 		add(pebbleGroup);
 		add(backFor);
 
+		FlxNapeSpace.init();
+
 		floorPosition = createWalls(pebbleGroup);
+
+		FlxNapeSpace.createWalls(0, -500, 0, floorPosition, 10, Material.wood());
+		FlxNapeSpace.space.gravity.setxy(0, 2000);
 
 		// ui
 		var acc = 30.0;
+		var pblX = 300.0;
 		for (p in PebbleGame.pebbleList)
 		{
 			if (p.location == NONE || p.location == locationType)
@@ -72,9 +81,11 @@ abstract class AbstractAreaState extends FlxTransitionableState
 
 				if (placed)
 				{
-					var pbl = createInteractivePebble(p);
+					var pbl = new InteractivePebble(pblX, floorPosition - 100, p.sprite.graphic, 0.3);
 					opt.interactivePebble = pbl;
 					pebbleGroup.add(pbl);
+
+					pblX += pbl.width + 50;
 				}
 			}
 		}
@@ -99,7 +110,6 @@ abstract class AbstractAreaState extends FlxTransitionableState
 
 	override function update(elapsed:Float)
 	{
-		FlxG.collide(pebbleGroup);
 		super.update(elapsed);
 
 		if (Math.round(currentPoints) != displayPoints)
@@ -134,7 +144,7 @@ abstract class AbstractAreaState extends FlxTransitionableState
 
 			if (opt.interactivePebble == null)
 			{
-				var pbl = createInteractivePebble(opt.pebble);
+				var pbl = new InteractivePebble(FlxG.random.float(200, FlxG.width - 500), 0, opt.pebble.sprite.graphic, 0.3);
 				if (pbl != null)
 				{
 					opt.interactivePebble = pbl;
@@ -189,18 +199,6 @@ abstract class AbstractAreaState extends FlxTransitionableState
 	private function makePebbleOption(x:Float, y:Float, pebble:PebbleDefinition, placed:Bool)
 	{
 		return new PebbleOption(x, y, pebble, placed, onPebbleOption);
-	}
-
-	private function createInteractivePebble(p:PebbleDefinition):InteractivePebble
-	{
-		var spr = p.sprite.clone();
-		spr.scale.set(0.3, 0.3);
-		spr.updateHitbox();
-
-		spr.x = FlxG.random.float(200, FlxG.width - spr.width - 200);
-		spr.y = floorPosition - spr.height;
-
-		return new InteractivePebble(spr);
 	}
 
 	private abstract function createBackgroundSprites():Void;
