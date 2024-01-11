@@ -16,6 +16,10 @@ import flixel.math.FlxPoint;
 import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
+import nape.constraint.PivotJoint;
+import nape.dynamics.InteractionFilter;
+import nape.geom.Vec2;
+import nape.phys.Body;
 import nape.phys.Material;
 import ui.Button;
 
@@ -36,7 +40,10 @@ abstract class AbstractAreaState extends FlxTransitionableState
 	private var mousePosition = new FlxPoint();
 
 	private var pebbleGroup = new FlxTypedGroup<FlxBasic>();
+	private var floor:Body = null;
 	private var floorPosition:Float = 0;
+
+	private var handJoint:PivotJoint;
 
 	public function new(locationType:PebbleLocation)
 	{
@@ -63,8 +70,12 @@ abstract class AbstractAreaState extends FlxTransitionableState
 
 		floorPosition = createWalls(pebbleGroup);
 
-		FlxNapeSpace.createWalls(0, -500, 0, floorPosition, 10, Material.wood());
+		floor = FlxNapeSpace.createWalls(0, -500, 0, floorPosition, 10, Material.sand());
 		FlxNapeSpace.space.gravity.setxy(0, 2000);
+		handJoint = new PivotJoint(FlxNapeSpace.space.world, null, Vec2.weak(), Vec2.weak());
+		handJoint.active = false;
+		handJoint.stiff = false;
+		handJoint.space = FlxNapeSpace.space;
 
 		// ui
 		var acc = 30.0;
@@ -81,7 +92,8 @@ abstract class AbstractAreaState extends FlxTransitionableState
 
 				if (placed)
 				{
-					var pbl = new InteractivePebble(pblX, floorPosition - 100, p.sprite.graphic, 0.3);
+					var pbl = new InteractivePebble(pblX, floorPosition - 100, p.sprite.graphic, 0.3); // TODO place on floor
+					pbl.setPosition(pbl.x, floorPosition - pbl.height);
 					opt.interactivePebble = pbl;
 					pebbleGroup.add(pbl);
 
@@ -122,6 +134,36 @@ abstract class AbstractAreaState extends FlxTransitionableState
 		var scrollPercent = mousePosition.x / FlxG.width;
 		backFar.x = FlxMath.bound(scrollPercent * backDiff - backDiff, -backDiff, 0);
 		backFor.x = FlxMath.bound(-scrollPercent * backDiff, -backDiff, 0);
+
+		// grab pebbles (any dynamic object actually)
+		if (handJoint.active || FlxG.mouse.justPressed)
+		{
+			handJoint.anchor1.set(handJoint.body1.worldPointToLocal(Vec2.weak(mousePosition.x, mousePosition.y), true));
+		}
+
+		if (FlxG.mouse.justPressed)
+		{
+			var mouseVec = Vec2.get(mousePosition.x, mousePosition.y);
+
+			FlxNapeSpace.space.bodiesUnderPoint(mouseVec).foreach(b ->
+			{
+				if (!b.isDynamic())
+				{
+					return;
+				}
+
+				handJoint.body2 = b;
+				handJoint.anchor2.set(b.worldPointToLocal(mouseVec, true));
+				handJoint.active = true;
+			});
+
+			mouseVec.dispose();
+		}
+
+		if (FlxG.mouse.justReleased)
+		{
+			handJoint.active = false;
+		}
 	}
 
 	private function onPebbleOption(opt:PebbleOption)
@@ -199,6 +241,16 @@ abstract class AbstractAreaState extends FlxTransitionableState
 	private function makePebbleOption(x:Float, y:Float, pebble:PebbleDefinition, placed:Bool)
 	{
 		return new PebbleOption(x, y, pebble, placed, onPebbleOption);
+	}
+
+	override function destroy()
+	{
+		super.destroy();
+		if (floor != null)
+		{
+			floor.space = null;
+		}
+		handJoint.space = null;
 	}
 
 	private abstract function createBackgroundSprites():Void;

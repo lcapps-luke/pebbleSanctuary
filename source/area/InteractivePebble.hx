@@ -30,7 +30,7 @@ class InteractivePebble extends FlxNapeSprite
 		updateHitbox();
 
 		var b = new Body(BodyType.DYNAMIC, Vec2.weak(x, y));
-		b.setShapeMaterials(Material.wood());
+		b.setShapeMaterials(new Material(0, 0.45, 0.6, 8, 0.5));
 		var poly = MarchingSquares.run(iso, new AABB(0, 0, w, h), Vec2.weak(20, 20));
 		poly.foreach(p ->
 		{
@@ -62,12 +62,18 @@ class InteractivePebble extends FlxNapeSprite
 
 	override function update(elapsed:Float)
 	{
+		var constrained = false;
+		this.body.constraints.foreach(c ->
+		{
+			constrained = constrained || c.active;
+		});
+
 		jumpTimer -= elapsed;
 		if (jumpTimer < 0)
 		{
 			jumpTimer = FlxG.random.float(1, 5);
 
-			if (Math.abs(this.body.velocity.y) < 5)
+			if (!constrained && Math.abs(this.body.velocity.y) < 5)
 			{
 				var vec = FlxPoint.get();
 				vec.setPolarDegrees(1500 * this.body.mass, FlxG.random.float(225, 315));
@@ -76,7 +82,7 @@ class InteractivePebble extends FlxNapeSprite
 			}
 		}
 
-		if (Math.abs(this.body.velocity.y) < 20)
+		if (!constrained && Math.abs(this.body.velocity.y) < 20)
 		{
 			var ang = FlxAngle.wrapAngle(FlxAngle.asDegrees(body.rotation));
 

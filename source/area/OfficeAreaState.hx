@@ -50,28 +50,6 @@ class OfficeAreaState extends AbstractAreaState
 
 	private function createWalls(group:FlxTypedGroup<FlxBasic>):Float
 	{
-		var w = new FlxSprite();
-		w.makeGraphic(FlxG.width, 64, FlxColor.TRANSPARENT);
-		w.immovable = true;
-		group.add(w);
-
-		w = new FlxSprite();
-		w.makeGraphic(FlxG.width, 250, FlxColor.TRANSPARENT);
-		w.setPosition(0, FlxG.height - w.height);
-		w.immovable = true;
-		group.add(w);
-
-		w = new FlxSprite();
-		w.makeGraphic(40, FlxG.height, FlxColor.TRANSPARENT);
-		w.immovable = true;
-		group.add(w);
-
-		w = new FlxSprite();
-		w.makeGraphic(40, FlxG.height, FlxColor.TRANSPARENT);
-		w.setPosition(FlxG.width - w.width, 0);
-		w.immovable = true;
-		group.add(w);
-
 		return FlxG.height - 250;
 	}
 }
