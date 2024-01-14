@@ -7,6 +7,7 @@ import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.util.FlxDestroyUtil;
+import nape.callbacks.CbType;
 import nape.geom.AABB;
 import nape.geom.MarchingSquares;
 import nape.geom.Vec2;
@@ -17,6 +18,8 @@ import nape.shape.Polygon;
 
 class InteractivePebble extends FlxNapeSprite
 {
+	public static var PEBBLE_TYPE(default, null) = new CbType();
+
 	private var jumpTimer:Float;
 
 	public function new(x:Float, y:Float, spr:FlxGraphicAsset, scale:Float)
@@ -56,6 +59,8 @@ class InteractivePebble extends FlxNapeSprite
 		origin.x += (comOffset.x - w / 2) * (1 / scale);
 		origin.y += (comOffset.y - h / 2) * (1 / scale);
 		comOffset.dispose();
+
+		this.body.cbTypes.add(PEBBLE_TYPE);
 
 		jumpTimer = FlxG.random.float(1, 5);
 	}

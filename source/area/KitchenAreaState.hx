@@ -62,6 +62,7 @@ class KitchenAreaState extends AbstractAreaState
 		walls.shapes.add(new Polygon(Polygon.rect(1520, 711, 100, 180)));
 		walls.space = FlxNapeSpace.space;
 		walls.setShapeMaterials(Material.wood());
+		walls.cbTypes.add(AbstractAreaState.WALL_TYPE);
 
 		return FlxG.height - 190;
 	}

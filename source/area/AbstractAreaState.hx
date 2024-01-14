@@ -15,7 +15,14 @@ import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
+import flixel.util.FlxArrayUtil;
 import flixel.util.FlxColor;
+import nape.callbacks.CbEvent;
+import nape.callbacks.CbType;
+import nape.callbacks.InteractionCallback;
+import nape.callbacks.InteractionListener;
+import nape.callbacks.InteractionType;
+import nape.callbacks.Listener;
 import nape.constraint.PivotJoint;
 import nape.dynamics.InteractionFilter;
 import nape.geom.Vec2;
@@ -25,6 +32,8 @@ import ui.Button;
 
 abstract class AbstractAreaState extends FlxTransitionableState
 {
+	private static var WALL_TYPE(default, null) = new CbType();
+
 	private var locationType:PebbleLocation;
 	private var unlockQueue:Array<Int>;
 	private var nextUnlockQty:Int;
@@ -44,6 +53,7 @@ abstract class AbstractAreaState extends FlxTransitionableState
 	private var floorPosition:Float = 0;
 
 	private var handJoint:PivotJoint;
+	private var pebbleCollisionListener:InteractionListener;
 
 	public function new(locationType:PebbleLocation)
 	{
@@ -68,9 +78,14 @@ abstract class AbstractAreaState extends FlxTransitionableState
 
 		FlxNapeSpace.init();
 
+		pebbleCollisionListener = new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, [WALL_TYPE, InteractivePebble.PEBBLE_TYPE],
+			InteractivePebble.PEBBLE_TYPE, onPebbleCollisionBegin);
+		pebbleCollisionListener.space = FlxNapeSpace.space;
+
 		floorPosition = createWalls(pebbleGroup);
 
 		floor = FlxNapeSpace.createWalls(0, -500, 0, floorPosition, 10, Material.sand());
+		floor.cbTypes.add(WALL_TYPE);
 		FlxNapeSpace.space.gravity.setxy(0, 2000);
 		handJoint = new PivotJoint(FlxNapeSpace.space.world, null, Vec2.weak(), Vec2.weak());
 		handJoint.active = false;
@@ -118,6 +133,34 @@ abstract class AbstractAreaState extends FlxTransitionableState
 		title.x = FlxG.width / 2 - title.width / 2;
 		title.y = FlxG.height * 0.1;
 		add(title);
+	}
+
+	private function onPebbleCollisionBegin(callback:InteractionCallback):Void
+	{
+		if (callback.arbiters.empty())
+		{
+			return;
+		}
+
+		var imp = callback.arbiters.at(0).collisionArbiter.totalImpulse();
+		var len = Math.abs(imp.length);
+
+		if (len > 0)
+		{
+			var com = callback.int2.castBody.worldCOM;
+			var pan = (com.x / FlxG.width) * 2 - 1;
+
+			var vol = Math.min(1, len / 50000);
+			FlxG.sound.play(FlxG.random.getObject([
+				AssetPaths.pebble_1__ogg,
+				AssetPaths.pebble_2__ogg,
+				AssetPaths.pebble_3__ogg,
+				AssetPaths.pebble_4__ogg,
+				AssetPaths.pebble_5__ogg,
+				AssetPaths.pebble_6__ogg,
+				AssetPaths.pebble_7__ogg
+			]), vol).pan = pan;
+		}
 	}
 
 	override function update(elapsed:Float)
@@ -251,6 +294,8 @@ abstract class AbstractAreaState extends FlxTransitionableState
 			floor.space = null;
 		}
 		handJoint.space = null;
+
+		pebbleCollisionListener.space = null;
 	}
 
 	private abstract function createBackgroundSprites():Void;
