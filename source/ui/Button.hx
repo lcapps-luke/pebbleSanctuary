@@ -20,8 +20,7 @@ class Button extends FlxButton
 			FlxG.sound.play(sound).persist = true;
 			onClick();
 		});
-
-		loadGraphic(getTypeGraphic(type));
+		resetHelpers();
 
 		this.label.setFormat(AssetPaths.Schoolbell__ttf, 50, FlxColor.BLACK);
 		for (o in this.labelOffsets)
@@ -30,6 +29,11 @@ class Button extends FlxButton
 		}
 
 		setMode(true);
+	}
+
+	override function loadDefaultGraphic()
+	{
+		loadGraphic(getTypeGraphic(type));
 	}
 
 	public function setMode(positive:Bool)

@@ -64,7 +64,7 @@ class KitchenAreaState extends AbstractAreaState
 		walls.setShapeMaterials(Material.wood());
 		walls.cbTypes.add(AbstractAreaState.WALL_TYPE);
 
-		return FlxG.height - 190;
+		return FlxG.height - 270;
 	}
 
 	override function destroy()

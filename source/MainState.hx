@@ -19,6 +19,7 @@ import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import ui.Button;
+import ui.IconButton;
 #if !hl
 import flixel.addons.effects.chainable.FlxOutlineEffect;
 #end
@@ -86,8 +87,7 @@ class MainState extends FlxTransitionableState
 		qty.text = 'Loading Pebbles';
 		add(qty);
 
-		var menuButton = new Button("Menu", SMALL, showMenu);
-		menuButton.setPosition(20, 20);
+		var menuButton = new IconButton(20, 20, AssetPaths.ico_menu__png, showMenu);
 		add(menuButton);
 
 		var releaseButton = new Button("Release", SMALL, onRelease);

@@ -50,6 +50,6 @@ class OfficeAreaState extends AbstractAreaState
 
 	private function createWalls(group:FlxTypedGroup<FlxBasic>):Float
 	{
-		return FlxG.height - 250;
+		return FlxG.height - 270;
 	}
 }
